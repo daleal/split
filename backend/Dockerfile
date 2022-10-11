@@ -15,10 +15,10 @@ ENV LANG=C.UTF-8 \
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y libpq-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install "poetry==$POETRY_VERSION"
+RUN apt-get update \
+    && apt-get install -y libpq-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install "poetry==$POETRY_VERSION"
 
 RUN python -m venv /venv
 
@@ -33,6 +33,13 @@ RUN poetry export --format requirements.txt --output fulldependencies.txt --with
 FROM python:3.10-slim-buster AS final
 
 ENV LANG=C.UTF-8
+
+RUN apt-get update \
+    && apt-get install -y \
+        libtesseract-dev \
+        tesseract-ocr \
+        tesseract-ocr-spa \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

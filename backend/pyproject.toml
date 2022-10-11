@@ -23,6 +23,7 @@ uvicorn = "^0.18.3"
 SQLAlchemy = "^1.4.41"
 alembic = "^1.8.1"
 psycopg2-binary = "^2.9.4"
+receipt-scanner = "^0.0.2"
 
 [tool.poetry.dev-dependencies]
 black = "^22.10.0"
