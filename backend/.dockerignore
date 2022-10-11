@@ -1,0 +1,16 @@
+# Exclude: everything
+*
+
+# Include: application files
+!alembic
+!split
+!alembic.ini
+
+# Include: build files
+!pyproject.toml
+!poetry.toml
+!poetry.lock
+
+# Include: misc files
+!entrypoint.sh
+!run.sh
