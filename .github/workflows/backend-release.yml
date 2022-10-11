@@ -1,0 +1,32 @@
+name: backend-release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/backend-release.yml
+      - backend/**/*
+
+jobs:
+  backend-release:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+    steps:
+      - name: Checkout to commit code
+        uses: actions/checkout@v3
+
+      - name: Install the Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Build and push
+        run: flyctl deploy
+
+      - name: Migrate the database
+        run: flyctl ssh console --command "alembic upgrade head"
