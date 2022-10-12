@@ -33,6 +33,7 @@ const fileSelected = async (file: Nullable<File>) => {
   </BigCenteredScreen>
   <FileHandler
     v-else
+    class="mt-3"
     @file-selected="fileSelected"
   />
 </template>

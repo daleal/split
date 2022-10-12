@@ -4,8 +4,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
-import ItemCard from '@/components/ItemCard.vue';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
+import ItemCard from './components/ItemCard.vue';
 
 const billStore = useBillStore();
 const itemsStore = useItemsStore();

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
-import BillView from '@/views/BillView.vue';
+import BillView from '@/views/bill/BillView.vue';
 
 const routes: RouteRecordRaw[] = [
   {
