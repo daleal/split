@@ -14,6 +14,7 @@ class Bill(BaseModel):
     images = Column(ARRAY(String), default=list)
 
     items = relationship("Item", back_populates="bill")
+    participants = relationship("Participant", back_populates="bill")
 
     @property
     def image(self) -> str | None:
