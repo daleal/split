@@ -36,6 +36,7 @@ ENV LANG=C.UTF-8
 
 RUN apt-get update \
     && apt-get install -y \
+        libgl1-mesa-dev \
         libtesseract-dev \
         tesseract-ocr \
         tesseract-ocr-spa \

@@ -3,8 +3,11 @@ from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 import split.crud.bills as bills_crud
+import split.crud.items as items_crud
 from split import deps
 from split.schemas.bill import BillResponseSchema, BillUpdateSchema
+from split.schemas.item import ItemCreateSchema
+from split.services.receipt_scanner import extract_relevant_information
 
 router = APIRouter()
 
@@ -31,3 +34,20 @@ def attach_image_to_bill(
 ) -> BillResponseSchema:
     bill = bills_crud.get_by_id(db, bill_id)
     return bills_crud.attach_image(db, bill, bill_schema.image)
+
+
+@router.post("/{bill_id}/items", response_model=BillResponseSchema)
+def create_items_from_bill(
+    bill_id: UUID4, db: Session = Depends(deps.get_db)
+) -> BillResponseSchema:
+    bill = bills_crud.get_by_id(db, bill_id)
+    if bill.image is None:
+        return bill
+    bill.items = []
+    extracted = extract_relevant_information(bill.image)
+    for raw_item in extracted:
+        item = items_crud.create(db, ItemCreateSchema(**raw_item))
+        bill.items.append(item)
+        db.commit()
+    db.refresh(bill)
+    return bill
