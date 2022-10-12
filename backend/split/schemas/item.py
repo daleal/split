@@ -4,9 +4,9 @@ from split.shared.schemas import BaseSchema
 
 
 class ItemCreateSchema(BaseSchema):
-    description: StrictStr | None
+    description: StrictStr
+    full_price: StrictInt
     amount: StrictInt | None
-    full_price: StrictInt | None
 
 
 class ItemResponseSchema(BaseSchema):

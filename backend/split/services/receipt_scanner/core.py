@@ -2,7 +2,7 @@ import re
 
 from receipt_scanner import scan
 
-from split.utils.regular_expressions import search
+from split.services.receipt_scanner.regular_expressions import search
 
 
 def clean_string(string: str) -> str:
