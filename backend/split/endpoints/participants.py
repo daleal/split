@@ -10,6 +10,14 @@ from split.schemas.participant import ParticipantCreateSchema, ParticipantRespon
 router = APIRouter()
 
 
+@router.get("", response_model=list[ParticipantResponseSchema])
+def get_all_items_from_bill(
+    bill_id: UUID4, db: Session = Depends(deps.get_db),
+) -> list[ParticipantResponseSchema]:
+    participants = participants_crud.get_all_by_bill_id(db, bill_id)
+    return list(participants)
+
+
 @router.post("", response_model=ParticipantResponseSchema)
 def create_participant(
     bill_id: UUID4,

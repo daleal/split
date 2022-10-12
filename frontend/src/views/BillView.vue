@@ -3,22 +3,25 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
 import { useItemsStore } from '@/stores/items';
+import { useParticipantsStore } from '@/stores/participants';
 import ItemCard from '@/components/ItemCard.vue';
 import LoadingScreen from '@/components/LoadingScreen.vue';
 
 const billStore = useBillStore();
 const itemsStore = useItemsStore();
+const participantsStore = useParticipantsStore();
 const router = useRouter();
 const route = useRoute();
 
 const loading = ref(false);
 
-const fetchBill = async (billId: string) => {
+const loadBillData = async (billId: string) => {
   loading.value = true;
   try {
     const billPromise = billStore.load(billId);
     const itemsPromise = itemsStore.load(billId);
-    await Promise.all([billPromise, itemsPromise]);
+    const participantsPromise = participantsStore.load(billId);
+    await Promise.all([billPromise, itemsPromise, participantsPromise]);
   } catch {
     await router.push({ path: '/' });
   } finally {
@@ -28,7 +31,7 @@ const fetchBill = async (billId: string) => {
 
 onMounted(() => {
   const billId = route.params.billId as string;
-  fetchBill(billId);
+  loadBillData(billId);
 });
 </script>
 
