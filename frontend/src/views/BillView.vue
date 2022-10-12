@@ -47,11 +47,12 @@ onMounted(() => {
   </div>
   <div
     v-else
-    class="flex flex-col mt-2"
+    class="flex flex-col mt-6"
   >
     <ItemCard
       v-for="item in itemsStore.items"
       :key="item.id"
+      class="mb-4"
       :item="item"
     />
   </div>
