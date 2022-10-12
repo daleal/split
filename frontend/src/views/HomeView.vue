@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
 import FileHandler from '@/components/FileHandler.vue';
-import LoadingScreen from '@/components/LoadingScreen.vue';
+import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
 
 import type { Nullable } from '@/types/utils';
 
@@ -26,7 +26,11 @@ const fileSelected = async (file: Nullable<File>) => {
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
+  <BigCenteredScreen v-if="loading">
+    <h2 class="font-medium text-3xl text-gray-800">
+      Loading...
+    </h2>
+  </BigCenteredScreen>
   <FileHandler
     v-else
     @file-selected="fileSelected"

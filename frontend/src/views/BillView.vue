@@ -5,7 +5,7 @@ import { useBillStore } from '@/stores/bill';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import ItemCard from '@/components/ItemCard.vue';
-import LoadingScreen from '@/components/LoadingScreen.vue';
+import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
 
 const billStore = useBillStore();
 const itemsStore = useItemsStore();
@@ -36,15 +36,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <LoadingScreen v-if="loading" />
-  <div
-    v-else-if="!itemsStore.items"
-    class="w-screen h-screen flex flex-col justify-center text-center"
-  >
+  <BigCenteredScreen v-if="loading">
+    <h2 class="font-medium text-3xl text-gray-800">
+      Loading...
+    </h2>
+  </BigCenteredScreen>
+  <BigCenteredScreen v-else-if="!itemsStore.items">
     <h2 class="font-medium text-3xl text-gray-800">
       Something went wrong!
     </h2>
-  </div>
+  </BigCenteredScreen>
   <div
     v-else
     class="flex flex-col mt-6"
