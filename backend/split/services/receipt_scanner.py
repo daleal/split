@@ -1,6 +1,21 @@
+import re
+
 from receipt_scanner import scan
 
 from split.utils.regular_expressions import search
+
+
+def clean_string(string: str) -> str:
+    return (
+        re.sub(r"[0-9]{7,}", "", string)
+        .replace(".", "")
+        .replace(",", "")
+        .replace("$", "")
+        .replace("/", "")
+        .replace("|", " ")
+        .replace("-", " ")
+        .strip()
+    )
 
 
 def extract_relevant_information(image_location: str) -> list[dict[str, str | int]]:
@@ -8,7 +23,7 @@ def extract_relevant_information(image_location: str) -> list[dict[str, str | in
     clean_text = list(
         filter(
             lambda stripped_text: stripped_text != "",
-            map(lambda raw_text: raw_text.strip(), scanned_text),
+            map(clean_string, scanned_text),
         )
     )
     filtered = [x for x in map(search, clean_text) if x is not None]
