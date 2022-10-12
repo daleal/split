@@ -37,7 +37,7 @@ def attach_image_to_bill(
 
 
 @router.post("/{bill_id}/items", response_model=BillResponseSchema)
-def create_items_from_bill(
+def generate_items_for_bill(
     bill_id: UUID4, db: Session = Depends(deps.get_db)
 ) -> BillResponseSchema:
     bill = bills_crud.get_by_id(db, bill_id)
