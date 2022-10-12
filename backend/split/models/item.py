@@ -21,7 +21,10 @@ class Item(BaseModel):
     bill = relationship("Bill", back_populates="items")
 
     def __init__(
-        self, description: str, full_price: int, amount: int | None = None,
+        self,
+        description: str,
+        full_price: int,
+        amount: int | None = None,
     ) -> None:
         self.description = description
         self.full_price = full_price

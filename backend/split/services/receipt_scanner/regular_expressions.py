@@ -1,7 +1,13 @@
 import re
 
 DENY_LIST = [
-    "total", "credito", "crédito", "debito", "débito", "tarjeta", "fecha",
+    "total",
+    "credito",
+    "crédito",
+    "debito",
+    "débito",
+    "tarjeta",
+    "fecha",
 ]
 
 DENY_LIST_EXPRESSION = re.compile("|".join(DENY_LIST), re.IGNORECASE)
