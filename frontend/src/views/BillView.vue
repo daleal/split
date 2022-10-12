@@ -1,36 +1,24 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import * as api from '@/api';
-import { useImageUpload } from '@/composables/imageUpload';
+import { useBillStore } from '@/stores/bill';
+import { useItemsStore } from '@/stores/items';
 import ItemCard from '@/components/ItemCard.vue';
+import LoadingScreen from '@/components/LoadingScreen.vue';
 
-import type { Bill } from '@/types/api/bill';
-import type { Nullable } from '@/types/utils';
-
+const billStore = useBillStore();
+const itemsStore = useItemsStore();
 const router = useRouter();
 const route = useRoute();
-const { getUploadedImage } = useImageUpload();
 
 const loading = ref(false);
-const bill = ref<Nullable<Bill>>(null);
-
-const bootstrapBill = async (billId: string) => {
-  const image = await getUploadedImage();
-  if (image) {
-    await api.bills.attachImage(billId, image.url);
-    return api.bills.generateItems(billId);
-  }
-  return null;
-};
 
 const fetchBill = async (billId: string) => {
   loading.value = true;
   try {
-    bill.value = await api.bills.get(billId);
-    if (bill.value.image === null) {
-      bill.value = await bootstrapBill(billId);
-    }
+    const billPromise = billStore.load(billId);
+    const itemsPromise = itemsStore.load(billId);
+    await Promise.all([billPromise, itemsPromise]);
   } catch {
     await router.push({ path: '/' });
   } finally {
@@ -45,16 +33,9 @@ onMounted(() => {
 </script>
 
 <template>
+  <LoadingScreen v-if="loading" />
   <div
-    v-if="loading"
-    class="w-screen h-screen flex flex-col justify-center text-center"
-  >
-    <h2 class="font-medium text-3xl text-gray-800">
-      Loading...
-    </h2>
-  </div>
-  <div
-    v-else-if="!bill?.items"
+    v-else-if="!itemsStore.items"
     class="w-screen h-screen flex flex-col justify-center text-center"
   >
     <h2 class="font-medium text-3xl text-gray-800">
@@ -66,7 +47,7 @@ onMounted(() => {
     class="flex flex-col mt-2"
   >
     <ItemCard
-      v-for="item in bill.items"
+      v-for="item in itemsStore.items"
       :key="item.id"
       :item="item"
     />
