@@ -68,7 +68,7 @@ onMounted(() => {
       :get-participant-color="participantsStore.getColor"
       @new-participant="createNewParticipant"
     />
-    <div class="mx-4 border-b-2 text-center">
+    <div class="mx-4 mb-2 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">
         Bill Items
       </h1>
@@ -76,7 +76,7 @@ onMounted(() => {
     <ItemCard
       v-for="item in itemsStore.items"
       :key="item.id"
-      class="my-4"
+      class="my-2"
       :item="item"
     />
   </div>

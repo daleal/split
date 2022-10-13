@@ -15,8 +15,8 @@ const individualPrice = computed(() => formatter.format(props.item.individualPri
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-md">
-    <div class="px-5 pb-5">
+  <div class="bg-gray-50 rounded-lg shadow-md">
+    <div class="px-5 pt-2 pb-5">
       <h5 class="text-xl font-semibold tracking-tight text-gray-900">
         {{ props.item.description }}
       </h5>
