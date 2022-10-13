@@ -1,7 +1,7 @@
 <template>
   <div class="w-full bg-purple-100">
-    <div class="mx-auto flex flex-col items-center font-medium text-purple-900 py-4">
-      <p>
+    <div class="mx-auto flex flex-col items-center font-medium text-purple-900">
+      <p class="my-4">
         Made with 💖 by
         <a
           href="https://github.com/daleal"
