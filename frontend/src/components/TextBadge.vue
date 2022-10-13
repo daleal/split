@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { badgeColors } from '@/utils/colors';
+import { colors } from '@/utils/colors';
 
-const props = defineProps<{ text: string, color?: typeof badgeColors[number] }>();
+const props = defineProps<{ text: string, color?: typeof colors[number] }>();
 
-const colors = computed(() => {
+const colorClasses = computed(() => {
   if (props.color === 'blue') {
     return 'bg-blue-100 text-blue-800';
   }
@@ -34,7 +34,7 @@ const colors = computed(() => {
 <template>
   <span
     :class="`
-      ${colors} text-lg font-medium px-2.5 py-0.5 rounded
+      ${colorClasses} text-lg font-medium px-2.5 py-0.5 rounded
     `"
   >
     {{ props.text }}

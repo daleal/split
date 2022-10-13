@@ -1,5 +1,7 @@
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
+import { selectRandom } from '@/utils/arrays';
+import { colors } from '@/utils/colors';
 import * as api from '@/api';
 
 import type { Participant } from '@/types/api/participant';
@@ -7,6 +9,7 @@ import type { Participant } from '@/types/api/participant';
 export const useParticipantsStore = defineStore('participants', () => {
   const loaded = ref(false);
   const participants = ref<Array<Participant>>([]);
+  const participantColors = reactive<Record<string, typeof colors[number]>>({});
 
   const load = async (billId: string) => {
     if (!loaded.value) {
@@ -20,7 +23,16 @@ export const useParticipantsStore = defineStore('participants', () => {
     participants.value = [...participants.value, newParticipant];
   };
 
-  return { participants, load, create };
+  const getColor = (participantId: string) => {
+    if (participantColors[participantId] === undefined) {
+      participantColors[participantId] = selectRandom(colors);
+    }
+    return participantColors[participantId];
+  };
+
+  return {
+    participants, load, create, getColor,
+  };
 });
 
 if (import.meta.hot) {

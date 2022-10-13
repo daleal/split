@@ -55,17 +55,28 @@ onMounted(() => {
   </BigCenteredScreen>
   <div
     v-else
-    class="flex flex-col mt-2"
+    class="flex flex-col mt-4"
   >
+    <div class="mx-4 border-b-2 text-center">
+      <h1 class="mb-2 font-medium text-2xl text-gray-800">
+        Participantes
+      </h1>
+    </div>
     <ParticipantsSelector
-      class="mb-2"
+      class="my-4"
       :participants="participantsStore.participants"
+      :get-participant-color="participantsStore.getColor"
       @new-participant="createNewParticipant"
     />
+    <div class="mx-4 border-b-2 text-center">
+      <h1 class="mb-2 font-medium text-2xl text-gray-800">
+        Consumos
+      </h1>
+    </div>
     <ItemCard
       v-for="item in itemsStore.items"
       :key="item.id"
-      class="mb-4"
+      class="my-4"
       :item="item"
     />
   </div>
