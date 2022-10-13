@@ -5,6 +5,7 @@ import { useBillStore } from '@/stores/bill';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
+import GenericSpinner from '@/components/GenericSpinner.vue';
 import ParticipantsSelector from './components/ParticipantsSelector.vue';
 import NewParticipantModal from './components/NewParticipantModal.vue';
 import ItemCard from './components/ItemCard.vue';
@@ -65,9 +66,7 @@ onMounted(() => {
     @close="closeNewParticipantModal"
   />
   <BigCenteredScreen v-if="loading">
-    <h2 class="font-medium text-3xl text-gray-800">
-      Loading...
-    </h2>
+    <GenericSpinner class="w-20 h-20 mx-auto text-gray-200 fill-purple-600" />
   </BigCenteredScreen>
   <BigCenteredScreen v-else-if="!itemsStore.items">
     <h2 class="font-medium text-3xl text-gray-800">

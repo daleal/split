@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
 import FileHandler from '@/components/FileHandler.vue';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
+import GenericSpinner from '@/components/GenericSpinner.vue';
 
 import type { Nullable } from '@/types/utils';
 
@@ -27,9 +28,7 @@ const fileSelected = async (file: Nullable<File>) => {
 
 <template>
   <BigCenteredScreen v-if="loading">
-    <h2 class="font-medium text-3xl text-gray-800">
-      Loading...
-    </h2>
+    <GenericSpinner class="w-20 h-20 mx-auto text-gray-200 fill-purple-600" />
   </BigCenteredScreen>
   <FileHandler
     v-else
