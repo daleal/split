@@ -5,6 +5,7 @@ import { useBillStore } from '@/stores/bill';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
+import ParticipantsSelector from './components/ParticipantsSelector.vue';
 import ItemCard from './components/ItemCard.vue';
 
 const billStore = useBillStore();
@@ -14,6 +15,12 @@ const router = useRouter();
 const route = useRoute();
 
 const loading = ref(false);
+
+const createNewParticipant = () => {
+  if (billStore.bill) {
+    participantsStore.create(billStore.bill.id, 'DIOS');
+  }
+};
 
 const loadBillData = async (billId: string) => {
   loading.value = true;
@@ -48,8 +55,13 @@ onMounted(() => {
   </BigCenteredScreen>
   <div
     v-else
-    class="flex flex-col mt-6"
+    class="flex flex-col mt-2"
   >
+    <ParticipantsSelector
+      class="mb-2"
+      :participants="participantsStore.participants"
+      @new-participant="createNewParticipant"
+    />
     <ItemCard
       v-for="item in itemsStore.items"
       :key="item.id"

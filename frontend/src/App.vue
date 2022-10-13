@@ -4,7 +4,7 @@ import PageFooter from '@/components/layout/PageFooter.vue';
 
 <template>
   <div class="w-screen h-screen overflow-x-hidden flex flex-col justify-between">
-    <div class="container max-w-md mx-auto pb-6 px-2 md:px-0">
+    <div class="container max-w-md mx-auto mb-6 px-2 md:px-0">
       <router-view />
     </div>
     <PageFooter />
