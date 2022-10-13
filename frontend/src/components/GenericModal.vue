@@ -12,7 +12,7 @@ const props = defineProps<{ show: boolean }>();
     >
       <div
         v-if="props.show"
-        class="fixed left-0 top-0 z-50 w-full h-full"
+        class="fixed left-0 top-0 z-50 w-screen h-screen"
       >
         <div
           class="
