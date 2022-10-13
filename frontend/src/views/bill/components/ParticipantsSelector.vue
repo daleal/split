@@ -26,7 +26,7 @@ const newParticipant = () => {
       :color="getParticipantColor(participant.id)"
     />
     <TextBadge
-      class="mx-3"
+      class="mx-3 my-2"
       text="+"
       @click="newParticipant"
     />

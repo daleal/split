@@ -55,11 +55,11 @@ onMounted(() => {
   </BigCenteredScreen>
   <div
     v-else
-    class="flex flex-col mt-4"
+    class="flex flex-col mt-4 overflow-y-hidden"
   >
     <div class="mx-4 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">
-        Participantes
+        Participants
       </h1>
     </div>
     <ParticipantsSelector
@@ -70,7 +70,7 @@ onMounted(() => {
     />
     <div class="mx-4 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">
-        Consumos
+        Bill Items
       </h1>
     </div>
     <ItemCard
