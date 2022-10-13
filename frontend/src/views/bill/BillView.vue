@@ -6,6 +6,7 @@ import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
 import ParticipantsSelector from './components/ParticipantsSelector.vue';
+import NewParticipantModal from './components/NewParticipantModal.vue';
 import ItemCard from './components/ItemCard.vue';
 
 const billStore = useBillStore();
@@ -16,10 +17,24 @@ const route = useRoute();
 
 const loading = ref(false);
 
-const createNewParticipant = () => {
+const newParticipantModalOpened = ref(false);
+const creatingNewParticipant = ref(false);
+
+const openNewParticipantModal = () => {
+  newParticipantModalOpened.value = true;
+};
+
+const closeNewParticipantModal = () => {
+  newParticipantModalOpened.value = false;
+};
+
+const createNewParticipant = async (name: string) => {
   if (billStore.bill) {
-    participantsStore.create(billStore.bill.id, 'DIOS');
+    creatingNewParticipant.value = true;
+    await participantsStore.create(billStore.bill.id, name);
+    creatingNewParticipant.value = false;
   }
+  closeNewParticipantModal();
 };
 
 const loadBillData = async (billId: string) => {
@@ -43,6 +58,12 @@ onMounted(() => {
 </script>
 
 <template>
+  <NewParticipantModal
+    :show="newParticipantModalOpened"
+    :creating="creatingNewParticipant"
+    @create="createNewParticipant"
+    @close="closeNewParticipantModal"
+  />
   <BigCenteredScreen v-if="loading">
     <h2 class="font-medium text-3xl text-gray-800">
       Loading...
@@ -55,7 +76,7 @@ onMounted(() => {
   </BigCenteredScreen>
   <div
     v-else
-    class="flex flex-col mt-4 overflow-y-hidden"
+    class="flex flex-col mt-4"
   >
     <div class="mx-4 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">
@@ -66,7 +87,7 @@ onMounted(() => {
       class="my-4"
       :participants="participantsStore.participants"
       :get-participant-color="participantsStore.getColor"
-      @new-participant="createNewParticipant"
+      @new-participant="openNewParticipantModal"
     />
     <div class="mx-4 mb-2 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">

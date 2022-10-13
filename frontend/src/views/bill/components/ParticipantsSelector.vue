@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { colors } from '@/utils/colors';
 import TextBadge from '@/components/TextBadge.vue';
+import GenericButton from '@/components/GenericButton.vue';
 
 import type { Participant } from '@/types/api/participant';
 
@@ -25,10 +27,11 @@ const newParticipant = () => {
       :text="participant.name"
       :color="getParticipantColor(participant.id)"
     />
-    <TextBadge
+    <GenericButton
       class="mx-3 my-2"
-      text="+"
       @click="newParticipant"
-    />
+    >
+      <FontAwesomeIcon :icon="[ 'fas', 'plus' ]" />
+    </GenericButton>
   </div>
 </template>

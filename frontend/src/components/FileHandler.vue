@@ -8,8 +8,8 @@ const emit = defineEmits<{ (e: 'file-selected', file: Nullable<File>): void }>()
 
 const highlighted = ref(false);
 
-const borderColor = computed(() => (highlighted.value ? 'border-fuchsia-500' : 'border-gray-300'));
-const backgroundColor = computed(() => (highlighted.value ? 'bg-fuchsia-50' : 'bg-gray-50'));
+const borderColor = computed(() => (highlighted.value ? 'border-purple-500' : 'border-gray-300'));
+const backgroundColor = computed(() => (highlighted.value ? 'bg-purple-50' : 'bg-gray-50'));
 
 const onFileExplorerSelection = (event: Event) => {
   event.preventDefault();
