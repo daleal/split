@@ -12,10 +12,11 @@ router = APIRouter()
 
 @router.get("", response_model=list[ParticipantResponseSchema])
 def get_all_items_from_bill(
-    bill_id: UUID4, db: Session = Depends(deps.get_db),
+    bill_id: UUID4,
+    db: Session = Depends(deps.get_db),
 ) -> list[ParticipantResponseSchema]:
     participants = participants_crud.get_all_by_bill_id(db, bill_id)
-    return list(participants)
+    return [ParticipantResponseSchema.from_orm(x) for x in participants]
 
 
 @router.post("", response_model=ParticipantResponseSchema)
@@ -29,4 +30,4 @@ def create_participant(
     bill.participants.append(participant)
     db.commit()
     db.refresh(participant)
-    return participant
+    return ParticipantResponseSchema.from_orm(participant)

@@ -1,10 +1,14 @@
 import uuid
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
 from split.shared.models import BaseModel
+
+if TYPE_CHECKING:
+    from split.models import Bill
 
 
 class Participant(BaseModel):
