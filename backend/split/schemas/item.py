@@ -1,5 +1,6 @@
 from pydantic import UUID4, StrictInt, StrictStr
 
+from split.schemas.consumption import ConsumptionResponseSchema
 from split.shared.schemas import BaseSchema
 
 
@@ -15,3 +16,4 @@ class ItemResponseSchema(BaseSchema):
     amount: StrictInt
     full_price: StrictInt
     individual_price: StrictInt
+    consumption: list[ConsumptionResponseSchema]
