@@ -8,7 +8,6 @@ from split.schemas.consumption import (
     ConsumptionCreateOrUpdateSchema,
     ConsumptionResponseSchema,
 )
-from split.services.receipt_scanner import extract_relevant_information
 
 router = APIRouter()
 

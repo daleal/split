@@ -21,9 +21,7 @@ class Item(BaseModel):
     amount = Column(Integer, nullable=False)
     full_price = Column(Integer, nullable=False)
 
-    consumption = relationship(
-        "Consumption", back_populates="item", uselist=True
-    )
+    consumption = relationship("Consumption", back_populates="item", uselist=True)
 
     bill_id = Column(UUID(as_uuid=True), ForeignKey("bills.id"))
     bill = relationship("Bill", back_populates="items")

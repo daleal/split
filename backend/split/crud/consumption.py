@@ -16,7 +16,10 @@ def get_all(db: Session, participant_id: UUID4) -> list[Consumption]:
 
 @overload
 def get(
-    db: Session, participant_id: UUID4, item_id: UUID4, silent: Literal[False],
+    db: Session,
+    participant_id: UUID4,
+    item_id: UUID4,
+    silent: Literal[False],
 ) -> Consumption:
     ...
 
@@ -28,25 +31,38 @@ def get(db: Session, participant_id: UUID4, item_id: UUID4) -> Consumption:
 
 @overload
 def get(
-    db: Session, participant_id: UUID4, item_id: UUID4, silent: Literal[True],
+    db: Session,
+    participant_id: UUID4,
+    item_id: UUID4,
+    silent: Literal[True],
 ) -> Consumption | None:
     ...
 
 
 @overload
 def get(
-    db: Session, participant_id: UUID4, item_id: UUID4, silent: bool,
+    db: Session,
+    participant_id: UUID4,
+    item_id: UUID4,
+    silent: bool,
 ) -> Consumption | None:
     ...
 
 
 def get(
-    db: Session, participant_id: UUID4, item_id: UUID4, silent: bool = False,
+    db: Session,
+    participant_id: UUID4,
+    item_id: UUID4,
+    silent: bool = False,
 ) -> Consumption | None:
-    consumption = db.query(Consumption).filter(
-        Consumption.participant_id == participant_id
-        and Consumption.item_id == item_id
-    ).first()
+    consumption = (
+        db.query(Consumption)
+        .filter(
+            Consumption.participant_id == participant_id
+            and Consumption.item_id == item_id
+        )
+        .first()
+    )
     if not silent and consumption is None:
         raise HTTPException(
             status_code=404,
@@ -62,12 +78,12 @@ def create(
     db: Session,
     participant_id: UUID4,
     item_id: UUID4,
-    consumption_schema: ConsumptionCreateOrUpdateSchema
+    consumption_schema: ConsumptionCreateOrUpdateSchema,
 ) -> Consumption:
     consumption = Consumption(
         participant_id=str(participant_id),
         item_id=str(item_id),
-        **consumption_schema.dict()
+        **consumption_schema.dict(),
     )
     db.add(consumption)
     db.commit()
