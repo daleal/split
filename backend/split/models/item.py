@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from split.shared.models import BaseModel
 
 if TYPE_CHECKING:
-    from split.models import Bill
+    from split.models import Bill, Consumption
 
 
 class Item(BaseModel):
@@ -20,6 +20,8 @@ class Item(BaseModel):
     description = Column(String, nullable=False)
     amount = Column(Integer, nullable=False)
     full_price = Column(Integer, nullable=False)
+
+    consumption = relationship("Consumption", back_populates="item", uselist=True)
 
     bill_id = Column(UUID(as_uuid=True), ForeignKey("bills.id"))
     bill = relationship("Bill", back_populates="items")
