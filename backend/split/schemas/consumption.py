@@ -1,12 +1,10 @@
-from pydantic import UUID4, StrictFloat
+from pydantic import UUID4, StrictFloat, StrictInt
 
 from split.shared.schemas import BaseSchema
 
 
 class ConsumptionCreateOrUpdateSchema(BaseSchema):
-    amount: StrictFloat
-    participant_id: UUID4
-    item_id: UUID4
+    amount: StrictFloat | StrictInt
 
 
 class ConsumptionResponseSchema(BaseSchema):

@@ -59,9 +59,16 @@ def get(
 
 
 def create(
-    db: Session, consumption_schema: ConsumptionCreateOrUpdateSchema
+    db: Session,
+    participant_id: UUID4,
+    item_id: UUID4,
+    consumption_schema: ConsumptionCreateOrUpdateSchema
 ) -> Consumption:
-    consumption = Consumption(**consumption_schema.dict())
+    consumption = Consumption(
+        participant_id=str(participant_id),
+        item_id=str(item_id),
+        **consumption_schema.dict()
+    )
     db.add(consumption)
     db.commit()
     db.refresh(consumption)
