@@ -1,15 +1,27 @@
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import { useStorage } from '@vueuse/core';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { selectRandom } from '@/utils/arrays';
 import { colors } from '@/utils/colors';
 import * as api from '@/api';
+import { useBillStore } from '@/stores/bill';
 
 import type { Participant } from '@/types/api/participant';
 
 export const useParticipantsStore = defineStore('participants', () => {
+  const billStore = useBillStore();
+
+  const selectedParticipantsStorage = useStorage<Record<string, string | undefined>>('selected-participants', {});
   const loaded = ref(false);
   const participants = ref<Array<Participant>>([]);
   const participantColors = reactive<Record<string, typeof colors[number]>>({});
+
+  const selectedParticipantId = computed(() => {
+    if (billStore.bill) {
+      return selectedParticipantsStorage.value[billStore.bill.id] || null;
+    }
+    return null;
+  });
 
   const load = async (billId: string) => {
     if (!loaded.value) {
@@ -23,6 +35,16 @@ export const useParticipantsStore = defineStore('participants', () => {
     participants.value = [...participants.value, newParticipant];
   };
 
+  const selectParticipant = (participantId: string) => {
+    if (billStore.bill) {
+      if (selectedParticipantsStorage.value[billStore.bill.id] === participantId) {
+        selectedParticipantsStorage.value[billStore.bill.id] = undefined;
+      } else {
+        selectedParticipantsStorage.value[billStore.bill.id] = participantId;
+      }
+    }
+  };
+
   const getColor = (participantId: string) => {
     if (participantColors[participantId] === undefined) {
       participantColors[participantId] = selectRandom(colors);
@@ -31,7 +53,7 @@ export const useParticipantsStore = defineStore('participants', () => {
   };
 
   return {
-    participants, load, create, getColor,
+    participants, selectedParticipantId, load, create, getColor, selectParticipant,
   };
 });
 
