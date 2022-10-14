@@ -1,0 +1,39 @@
+name: frontend-linters
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/frontend-linters.yml
+      - frontend/**/*
+
+jobs:
+  eslint:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+
+    steps:
+      - name: Checkout to commit code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Set up node_modules cache
+        uses: actions/cache@v3
+        id: node-modules-cache
+        with:
+          key: node-modules-cache-${{ hashFiles('**/package-lock.json') }}
+          path: '**/node_modules'
+
+      - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Lint with ESLint
+        run: npm run lint
