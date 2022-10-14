@@ -13,10 +13,11 @@ router = APIRouter()
 
 @router.get("", response_model=list[ItemResponseSchema])
 def get_all_items_from_bill(
-    bill_id: UUID4, db: Session = Depends(deps.get_db),
+    bill_id: UUID4,
+    db: Session = Depends(deps.get_db),
 ) -> list[ItemResponseSchema]:
     items = items_crud.get_all_by_bill_id(db, bill_id)
-    return list(items)
+    return [ItemResponseSchema.from_orm(x) for x in items]
 
 
 @router.post("/generate", response_model=list[ItemResponseSchema])
@@ -30,4 +31,4 @@ def generate_items(
     items = [items_crud.create(db, ItemCreateSchema(**x)) for x in extracted]
     bill.items = items
     db.commit()
-    return list(items)
+    return [ItemResponseSchema.from_orm(x) for x in items]

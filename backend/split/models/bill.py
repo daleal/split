@@ -1,10 +1,14 @@
 import uuid
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from sqlalchemy.orm import relationship
 
 from split.shared.models import BaseModel
+
+if TYPE_CHECKING:
+    from split.models import Item, Participant
 
 
 class Bill(BaseModel):
@@ -13,8 +17,8 @@ class Bill(BaseModel):
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     images = Column(ARRAY(String), default=list)
 
-    items = relationship("Item", back_populates="bill")
-    participants = relationship("Participant", back_populates="bill")
+    items = relationship("Item", back_populates="bill", uselist=True)
+    participants = relationship("Participant", back_populates="bill", uselist=True)
 
     @property
     def image(self) -> str | None:

@@ -85,7 +85,9 @@ onMounted(() => {
     <ParticipantsSelector
       class="my-4"
       :participants="participantsStore.participants"
+      :selected-participant-id="participantsStore.selectedParticipantId"
       :get-participant-color="participantsStore.getColor"
+      @select-participant="participantsStore.selectParticipant"
       @new-participant="openNewParticipantModal"
     />
     <div class="mx-4 mb-2 border-b-2 text-center">

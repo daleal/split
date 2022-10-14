@@ -1,4 +1,10 @@
+POETRY_VERSION = 1.2.1
+
 # Env stuff
+.PHONY: get-poetry
+get-poetry:
+	curl -sSL https://install.python-poetry.org | python3 - --version $(POETRY_VERSION)
+
 .PHONY: build-env
 build-env:
 	python3.10 -m venv .venv
