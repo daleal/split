@@ -6,8 +6,8 @@ import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
 import GenericSpinner from '@/components/GenericSpinner.vue';
-import ParticipantsSelector from './components/ParticipantsSelector.vue';
-import NewParticipantModal from './components/NewParticipantModal.vue';
+import ParticipantsSelector from './components/participants/ParticipantsSelector.vue';
+import NewParticipantModal from './components/participants/NewParticipantModal.vue';
 import ItemCard from './components/ItemCard.vue';
 
 const billStore = useBillStore();

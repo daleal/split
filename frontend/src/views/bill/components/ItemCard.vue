@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { colors } from '@/utils/colors';
-import ConsumptionColors from '@/views/bill/components/ConsumptionColors.vue';
+import ConsumptionColors from '@/views/bill/components/consumption/ConsumptionColors.vue';
 
 import type { Item } from '@/types/api/item';
 
