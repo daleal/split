@@ -100,6 +100,7 @@ onMounted(() => {
       :key="item.id"
       class="my-2"
       :item="item"
+      :get-participant-color="participantsStore.getColor"
     />
   </div>
 </template>
