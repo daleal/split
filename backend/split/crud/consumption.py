@@ -58,8 +58,7 @@ def get(
     consumption = (
         db.query(Consumption)
         .filter(
-            Consumption.participant_id == participant_id
-            and Consumption.item_id == item_id
+            Consumption.participant_id == participant_id, Consumption.item_id == item_id
         )
         .first()
     )
