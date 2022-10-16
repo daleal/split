@@ -6,6 +6,7 @@ import { colors } from '@/utils/colors';
 import * as api from '@/api';
 import { useBillStore } from '@/stores/bill';
 
+import type { Consumption } from '@/types/api/consumption';
 import type { Participant } from '@/types/api/participant';
 
 export const useParticipantsStore = defineStore('participants', () => {
@@ -16,9 +17,10 @@ export const useParticipantsStore = defineStore('participants', () => {
   const participants = ref<Array<Participant>>([]);
   const participantColors = reactive<Record<string, typeof colors[number]>>({});
 
-  const selectedParticipantId = computed(() => {
+  const selectedParticipant = computed(() => {
     if (billStore.bill) {
-      return selectedParticipantsStorage.value[billStore.bill.id] || null;
+      const participantId = selectedParticipantsStorage.value[billStore.bill.id];
+      return participants.value.find((participant) => participant.id === participantId) || null;
     }
     return null;
   });
@@ -45,25 +47,6 @@ export const useParticipantsStore = defineStore('participants', () => {
     }
   };
 
-  const modifyConsumption = async (itemId: string, amount: number) => {
-    if (selectedParticipantId.value) {
-      await api.consumption.createOrUpdate(
-        selectedParticipantId.value,
-        itemId,
-        amount,
-      );
-    }
-  };
-
-  const removeConsumption = async (itemId: string) => {
-    if (selectedParticipantId.value) {
-      await api.consumption.remove(
-        selectedParticipantId.value,
-        itemId,
-      );
-    }
-  };
-
   const getColor = (participantId: string) => {
     if (participantColors[participantId] === undefined) {
       participantColors[participantId] = selectRandom(colors);
@@ -71,14 +54,47 @@ export const useParticipantsStore = defineStore('participants', () => {
     return participantColors[participantId];
   };
 
+  const addOrUpdateConsumption = (consumption: Consumption) => {
+    const participant = participants.value.find(
+      (internalParticipant) => internalParticipant.id === consumption.itemId,
+    );
+    if (participant) {
+      const participantConsumption = participant.consumption.find(
+        (internalConsumption) => internalConsumption.id === consumption.id,
+      );
+      if (participantConsumption) {
+        participantConsumption.amount = consumption.amount;
+      } else {
+        participant.consumption = [...participant.consumption, consumption];
+      }
+    }
+  };
+
+  const removeConsumption = (participantId: string, itemId: string) => {
+    const participant = participants.value.find(
+      (internalParticipant) => internalParticipant.id === participantId,
+    );
+    if (participant) {
+      const participantConsumption = participant.consumption.find(
+        (internalConsumption) => internalConsumption.itemId === itemId,
+      );
+      const consumptionIndex = (
+        participantConsumption ? participant.consumption.indexOf(participantConsumption) : -1
+      );
+      if (consumptionIndex > -1) {
+        participant.consumption.splice(consumptionIndex, 1);
+      }
+    }
+  };
+
   return {
     participants,
-    selectedParticipantId,
+    selectedParticipant,
     load,
     create,
     getColor,
     selectParticipant,
-    modifyConsumption,
+    addOrUpdateConsumption,
     removeConsumption,
   };
 });

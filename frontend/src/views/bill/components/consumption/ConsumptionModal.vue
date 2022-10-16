@@ -7,11 +7,12 @@ import GenericInput from '@/components/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 
 import type { Item } from '@/types/api/item';
+import type { Participant } from '@/types/api/participant';
 import { Nullable } from '@/types/utils';
 
 const props = defineProps<{
   item: Nullable<Item>,
-  selectedParticipantId: Nullable<string>,
+  selectedParticipant: Nullable<Participant>,
   show: boolean,
   modifyingConsumption: boolean
 }>();
@@ -23,9 +24,10 @@ const emit = defineEmits<{
 }>();
 
 const consumption = computed(() => {
-  if (props.selectedParticipantId && props.item) {
+  if (props.selectedParticipant && props.item) {
+    const participantId = props.selectedParticipant.id;
     return props.item.consumption.find((individualConsumption) => (
-      individualConsumption.participantId === props.selectedParticipantId
+      individualConsumption.participantId === participantId
     )) || null;
   }
   return null;
@@ -58,7 +60,7 @@ const close = () => {
   emit('close');
 };
 
-watch([() => props.item, () => props.selectedParticipantId], () => {
+watch([() => props.item, () => props.selectedParticipant], () => {
   amount.value = consumption?.value?.amount?.toString() || '0';
 });
 </script>

@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
+import { useConsumptionStore } from '@/stores/consumption';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
@@ -15,6 +16,7 @@ import type { Item } from '@/types/api/item';
 import type { Nullable } from '@/types/utils';
 
 const billStore = useBillStore();
+const consumptionStore = useConsumptionStore();
 const itemsStore = useItemsStore();
 const participantsStore = useParticipantsStore();
 const router = useRouter();
@@ -50,7 +52,7 @@ const toggleConsumptionModal = (item?: Item) => {
 const modifyConsumption = async (amount: number) => {
   if (selectedConsumptionItem.value) {
     modifyingConsumption.value = true;
-    await participantsStore.modifyConsumption(selectedConsumptionItem.value.id, amount);
+    await consumptionStore.modifyConsumption(selectedConsumptionItem.value.id, amount);
     modifyingConsumption.value = false;
     toggleConsumptionModal();
   }
@@ -60,7 +62,7 @@ const removeConsumption = async () => {
   if (selectedConsumptionItem.value) {
     modifyingConsumption.value = true;
     try {
-      await participantsStore.removeConsumption(selectedConsumptionItem.value.id);
+      await consumptionStore.removeConsumption(selectedConsumptionItem.value.id);
     } finally {
       modifyingConsumption.value = false;
       toggleConsumptionModal();
@@ -97,7 +99,7 @@ onMounted(() => {
   />
   <ConsumptionModal
     :item="selectedConsumptionItem"
-    :selected-participant-id="participantsStore.selectedParticipantId"
+    :selected-participant="participantsStore.selectedParticipant"
     :show="consumptionModalOpened"
     :modifying-consumption="modifyingConsumption"
     @modify-consumption="modifyConsumption"
@@ -124,7 +126,7 @@ onMounted(() => {
     <ParticipantsSelector
       class="my-4"
       :participants="participantsStore.participants"
-      :selected-participant-id="participantsStore.selectedParticipantId"
+      :selected-participant="participantsStore.selectedParticipant"
       :get-participant-color="participantsStore.getColor"
       @select-participant="participantsStore.selectParticipant"
       @new-participant="toggleNewParticipantModal"
@@ -139,7 +141,7 @@ onMounted(() => {
       :key="item.id"
       class="my-2"
       :item="item"
-      :participant-id="participantsStore.selectedParticipantId"
+      :participant="participantsStore.selectedParticipant"
       :get-participant-color="participantsStore.getColor"
       @modify-consumption="toggleConsumptionModal"
     />
