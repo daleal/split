@@ -17,10 +17,14 @@ export const useParticipantsStore = defineStore('participants', () => {
   const participants = ref<Array<Participant>>([]);
   const participantColors = reactive<Record<string, typeof colors[number]>>({});
 
+  const findById = (participantId: string) => (
+    participants.value.find((participant) => participant.id === participantId)
+  );
+
   const selectedParticipant = computed(() => {
     if (billStore.bill) {
-      const participantId = selectedParticipantsStorage.value[billStore.bill.id];
-      return participants.value.find((participant) => participant.id === participantId) || null;
+      const participantId = selectedParticipantsStorage.value[billStore.bill.id] || '';
+      return findById(participantId) || null;
     }
     return null;
   });
@@ -55,9 +59,7 @@ export const useParticipantsStore = defineStore('participants', () => {
   };
 
   const addOrUpdateConsumption = (consumption: Consumption) => {
-    const participant = participants.value.find(
-      (internalParticipant) => internalParticipant.id === consumption.itemId,
-    );
+    const participant = findById(consumption.participantId);
     if (participant) {
       const participantConsumption = participant.consumption.find(
         (internalConsumption) => internalConsumption.id === consumption.id,
@@ -71,9 +73,7 @@ export const useParticipantsStore = defineStore('participants', () => {
   };
 
   const removeConsumption = (participantId: string, itemId: string) => {
-    const participant = participants.value.find(
-      (internalParticipant) => internalParticipant.id === participantId,
-    );
+    const participant = findById(participantId);
     if (participant) {
       const participantConsumption = participant.consumption.find(
         (internalConsumption) => internalConsumption.itemId === itemId,
@@ -89,6 +89,7 @@ export const useParticipantsStore = defineStore('participants', () => {
 
   return {
     participants,
+    findById,
     selectedParticipant,
     load,
     create,

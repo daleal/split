@@ -9,6 +9,8 @@ export const useItemsStore = defineStore('items', () => {
   const loaded = ref(false);
   const items = ref<Array<Item>>([]);
 
+  const findById = (itemId: string) => items.value.find((item) => item.id === itemId);
+
   const load = async (billId: string) => {
     if (!loaded.value) {
       items.value = await api.items.all(billId);
@@ -22,7 +24,7 @@ export const useItemsStore = defineStore('items', () => {
   };
 
   const addOrUpdateConsumption = (consumption: Consumption) => {
-    const item = items.value.find((internalItem) => internalItem.id === consumption.itemId);
+    const item = findById(consumption.itemId);
     if (item) {
       const itemConsumption = item.consumption.find(
         (internalConsumption) => internalConsumption.id === consumption.id,
@@ -36,7 +38,7 @@ export const useItemsStore = defineStore('items', () => {
   };
 
   const removeConsumption = (participantId: string, itemId: string) => {
-    const item = items.value.find((internalItem) => internalItem.id === itemId);
+    const item = findById(itemId);
     if (item) {
       const itemConsumption = item.consumption.find(
         (internalConsumption) => internalConsumption.participantId === participantId,
@@ -49,7 +51,7 @@ export const useItemsStore = defineStore('items', () => {
   };
 
   return {
-    items, generate, load, addOrUpdateConsumption, removeConsumption,
+    items, findById, generate, load, addOrUpdateConsumption, removeConsumption,
   };
 });
 
