@@ -43,17 +43,21 @@ const modifyConsumption = () => {
       </h5>
       <div class="flex justify-between items-center mt-4">
         <div class="px-2">
+          <span class="text-2xl font-bold text-gray-900">{{ fullPrice }}</span>
+          <span class="text-lg font-semibold text-gray-900 ml-1">total</span>
+        </div>
+        <div class="px-2">
           <span class="text-2xl font-bold text-gray-900">{{ props.item.amount }}</span>
           <span class="text-lg font-semibold text-gray-900 ml-1">
             {{ inflect('item', props.item.amount) }}
           </span>
         </div>
-        <div class="px-2">
-          <span class="text-2xl font-bold text-gray-900">{{ fullPrice }}</span>
-          <span class="text-lg font-semibold text-gray-900 ml-1">total</span>
-        </div>
       </div>
       <div class="flex justify-between items-center">
+        <div class="px-2 mt-2">
+          <span class="text-2xl font-bold text-gray-900">{{ individualPrice }}</span>
+          <span class="text-lg font-semibold text-gray-900 ml-1">c/u</span>
+        </div>
         <div
           class="border rounded-lg pt-0.5 pb-1 mt-2"
           :class="{
@@ -75,10 +79,6 @@ const modifyConsumption = () => {
             v-else
             class="text-lg font-semibold text-gray-900 ml-1"
           >consumed</span>
-        </div>
-        <div class="px-2 mt-2">
-          <span class="text-2xl font-bold text-gray-900">{{ individualPrice }}</span>
-          <span class="text-lg font-semibold text-gray-900 ml-1">c/u</span>
         </div>
       </div>
     </div>
