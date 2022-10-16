@@ -40,6 +40,7 @@ watch(() => props.show, () => {
     <div class="flex flex-col">
       <GenericInput
         v-model="value"
+        autocapitalize="none"
         :disabled="props.creating"
         :loading="props.creating"
         class="w-72 md:w-80"
