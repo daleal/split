@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
+import { currencyFormatter } from '@/utils/intl';
 
 const itemsStore = useItemsStore();
 const participantsStore = useParticipantsStore();
@@ -36,7 +37,7 @@ const totalAmount = computed(() => {
       >
         <div class="container max-w-md mx-auto px-2 md:px-0">
           <h2 class="font-bold text-3xl text-gray-800 my-4">
-            Total owed: {{ totalAmount }}
+            Total owed: {{ currencyFormatter.format(totalAmount) }}
           </h2>
         </div>
       </div>
