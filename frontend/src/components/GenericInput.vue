@@ -3,14 +3,16 @@ import { computed, toRef } from 'vue';
 import GenericSpinner from '@/components/GenericSpinner.vue';
 
 const props = withDefaults(defineProps<{
-    modelValue: string,
-    placeholder?: string,
-    hint?: string,
-    error?: string,
-    loading?: boolean,
-    disabled?: boolean,
-    formatter?: (newValue: string, oldValue: string) => string,
-  }>(), {
+  modelValue: string,
+  autocapitalize?: string,
+  placeholder?: string,
+  hint?: string,
+  error?: string,
+  loading?: boolean,
+  disabled?: boolean,
+  formatter?: (newValue: string, oldValue: string) => string,
+}>(), {
+  autocapitalize: 'sentences',
   loading: false,
   disabled: false,
   formatter: (value: string) => value,
@@ -42,14 +44,15 @@ const updateInput = (event: Event) => {
   <div>
     <input
       :class="`
-          focus:outline-none w-full border-2 rounded-md px-4 py-3
-          leading-tight text-gray-900 placeholder-gray-400
-          ${inputColorClasses} ${ !loading && !renderSubText ? 'mb-6' : '' }
-          disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none
-        `"
-      :placeholder="placeholder"
+        focus:outline-none w-full border-2 rounded-md px-4 py-3
+        leading-tight text-gray-900 placeholder-gray-400
+        ${inputColorClasses} ${ !props.loading && !renderSubText ? 'mb-6' : '' }
+        disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none
+      `"
+      :autocapitalize="props.autocapitalize"
+      :placeholder="props.placeholder"
       :value="value"
-      :disabled="disabled"
+      :disabled="props.disabled"
       @input="updateInput"
     >
     <GenericSpinner
