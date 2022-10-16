@@ -45,6 +45,25 @@ export const useParticipantsStore = defineStore('participants', () => {
     }
   };
 
+  const modifyConsumption = async (itemId: string, amount: number) => {
+    if (selectedParticipantId.value) {
+      await api.consumption.createOrUpdate(
+        selectedParticipantId.value,
+        itemId,
+        amount,
+      );
+    }
+  };
+
+  const removeConsumption = async (itemId: string) => {
+    if (selectedParticipantId.value) {
+      await api.consumption.remove(
+        selectedParticipantId.value,
+        itemId,
+      );
+    }
+  };
+
   const getColor = (participantId: string) => {
     if (participantColors[participantId] === undefined) {
       participantColors[participantId] = selectRandom(colors);
@@ -53,7 +72,14 @@ export const useParticipantsStore = defineStore('participants', () => {
   };
 
   return {
-    participants, selectedParticipantId, load, create, getColor, selectParticipant,
+    participants,
+    selectedParticipantId,
+    load,
+    create,
+    getColor,
+    selectParticipant,
+    modifyConsumption,
+    removeConsumption,
   };
 });
 

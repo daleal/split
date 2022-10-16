@@ -6,9 +6,13 @@ import { useItemsStore } from '@/stores/items';
 import { useParticipantsStore } from '@/stores/participants';
 import BigCenteredScreen from '@/components/BigCenteredScreen.vue';
 import GenericSpinner from '@/components/GenericSpinner.vue';
-import ParticipantsSelector from './components/participants/ParticipantsSelector.vue';
-import NewParticipantModal from './components/participants/NewParticipantModal.vue';
-import ItemCard from './components/ItemCard.vue';
+import ParticipantsSelector from '@/views/bill/components/participants/ParticipantsSelector.vue';
+import NewParticipantModal from '@/views/bill/components/participants/NewParticipantModal.vue';
+import ConsumptionModal from '@/views/bill/components/consumption/ConsumptionModal.vue';
+import ItemCard from '@/views/bill/components/ItemCard.vue';
+
+import type { Item } from '@/types/api/item';
+import type { Nullable } from '@/types/utils';
 
 const billStore = useBillStore();
 const itemsStore = useItemsStore();
@@ -21,12 +25,12 @@ const loading = ref(false);
 const newParticipantModalOpened = ref(false);
 const creatingNewParticipant = ref(false);
 
-const openNewParticipantModal = () => {
-  newParticipantModalOpened.value = true;
-};
+const consumptionModalOpened = ref(false);
+const selectedConsumptionItem = ref<Nullable<Item>>(null);
+const modifyingConsumption = ref(false);
 
-const closeNewParticipantModal = () => {
-  newParticipantModalOpened.value = false;
+const toggleNewParticipantModal = () => {
+  newParticipantModalOpened.value = !newParticipantModalOpened.value;
 };
 
 const createNewParticipant = async (name: string) => {
@@ -35,7 +39,33 @@ const createNewParticipant = async (name: string) => {
     await participantsStore.create(billStore.bill.id, name);
     creatingNewParticipant.value = false;
   }
-  closeNewParticipantModal();
+  toggleNewParticipantModal();
+};
+
+const toggleConsumptionModal = (item?: Item) => {
+  consumptionModalOpened.value = !consumptionModalOpened.value;
+  selectedConsumptionItem.value = item || null;
+};
+
+const modifyConsumption = async (amount: number) => {
+  if (selectedConsumptionItem.value) {
+    modifyingConsumption.value = true;
+    await participantsStore.modifyConsumption(selectedConsumptionItem.value.id, amount);
+    modifyingConsumption.value = false;
+    toggleConsumptionModal();
+  }
+};
+
+const removeConsumption = async () => {
+  if (selectedConsumptionItem.value) {
+    modifyingConsumption.value = true;
+    try {
+      await participantsStore.removeConsumption(selectedConsumptionItem.value.id);
+    } finally {
+      modifyingConsumption.value = false;
+      toggleConsumptionModal();
+    }
+  }
 };
 
 const loadBillData = async (billId: string) => {
@@ -63,7 +93,16 @@ onMounted(() => {
     :show="newParticipantModalOpened"
     :creating="creatingNewParticipant"
     @create="createNewParticipant"
-    @close="closeNewParticipantModal"
+    @close="toggleNewParticipantModal"
+  />
+  <ConsumptionModal
+    :item="selectedConsumptionItem"
+    :selected-participant-id="participantsStore.selectedParticipantId"
+    :show="consumptionModalOpened"
+    :modifying-consumption="modifyingConsumption"
+    @modify-consumption="modifyConsumption"
+    @remove-consumption="removeConsumption"
+    @close="toggleConsumptionModal"
   />
   <BigCenteredScreen v-if="loading">
     <GenericSpinner class="w-20 h-20 mx-auto text-gray-200 fill-purple-600" />
@@ -88,7 +127,7 @@ onMounted(() => {
       :selected-participant-id="participantsStore.selectedParticipantId"
       :get-participant-color="participantsStore.getColor"
       @select-participant="participantsStore.selectParticipant"
-      @new-participant="openNewParticipantModal"
+      @new-participant="toggleNewParticipantModal"
     />
     <div class="mx-4 mb-2 border-b-2 text-center">
       <h1 class="mb-2 font-medium text-2xl text-gray-800">
@@ -100,7 +139,9 @@ onMounted(() => {
       :key="item.id"
       class="my-2"
       :item="item"
+      :participant-id="participantsStore.selectedParticipantId"
       :get-participant-color="participantsStore.getColor"
+      @modify-consumption="toggleConsumptionModal"
     />
   </div>
 </template>

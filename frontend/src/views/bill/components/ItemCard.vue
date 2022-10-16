@@ -4,11 +4,15 @@ import { colors } from '@/utils/colors';
 import ConsumptionColors from '@/views/bill/components/consumption/ConsumptionColors.vue';
 
 import type { Item } from '@/types/api/item';
+import type { Nullable } from '@/types/utils';
 
 const props = defineProps<{
   item: Item,
+  participantId: Nullable<string>,
   getParticipantColor: (participantId: string) => typeof colors[number],
 }>();
+
+const emit = defineEmits<{ (e: 'modify-consumption', item?: Item): void }>();
 
 const formatter = Intl.NumberFormat('es-CL', {
   style: 'currency',
@@ -22,6 +26,12 @@ const amountConsumed = computed(
 );
 
 const inflect = (word: string, amount: number) => (amount === 1 ? word : `${word}s`);
+
+const modifyConsumption = () => {
+  if (props.participantId) {
+    emit('modify-consumption', props.item);
+  }
+};
 </script>
 
 <template>
@@ -44,11 +54,14 @@ const inflect = (word: string, amount: number) => (amount === 1 ? word : `${word
       </div>
       <div class="flex justify-between items-center">
         <div
-          class="border rounded-lg pt-0.5 pb-1 mt-2 bg-white cursor-pointer"
+          class="border rounded-lg pt-0.5 pb-1 mt-2"
           :class="{
+            'border-gray-50': !props.participantId,
+            'bg-white cursor-pointer': !!props.participantId,
             'flex items-center pl-2 pr-1.5': item.consumption.length > 0,
             'px-2': !item.consumption.length,
           }"
+          @click="modifyConsumption"
         >
           <span class="text-2xl font-bold text-gray-900">{{ amountConsumed }}</span>
           <ConsumptionColors

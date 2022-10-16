@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
     error?: string,
     loading?: boolean,
     disabled?: boolean,
-    formatter?: (value: string) => string,
+    formatter?: (newValue: string, oldValue: string) => string,
   }>(), {
   loading: false,
   disabled: false,
@@ -32,7 +32,7 @@ const inputColorClasses = computed(() => {
 });
 const updateInput = (event: Event) => {
   const target = (event.target as HTMLInputElement);
-  const formattedValue = props.formatter(target.value);
+  const formattedValue = props.formatter(target.value, props.modelValue);
   emit('update:modelValue', formattedValue);
   target.value = formattedValue;
 };
