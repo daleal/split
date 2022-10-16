@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import * as api from '@/api';
 
+import type { Consumption } from '@/types/api/consumption';
 import type { Item } from '@/types/api/item';
 
 export const useItemsStore = defineStore('items', () => {
@@ -20,7 +21,36 @@ export const useItemsStore = defineStore('items', () => {
     loaded.value = true;
   };
 
-  return { items, generate, load };
+  const addOrUpdateConsumption = (consumption: Consumption) => {
+    const item = items.value.find((internalItem) => internalItem.id === consumption.itemId);
+    if (item) {
+      const itemConsumption = item.consumption.find(
+        (internalConsumption) => internalConsumption.id === consumption.id,
+      );
+      if (itemConsumption) {
+        itemConsumption.amount = consumption.amount;
+      } else {
+        item.consumption = [...item.consumption, consumption];
+      }
+    }
+  };
+
+  const removeConsumption = (participantId: string, itemId: string) => {
+    const item = items.value.find((internalItem) => internalItem.id === itemId);
+    if (item) {
+      const itemConsumption = item.consumption.find(
+        (internalConsumption) => internalConsumption.participantId === participantId,
+      );
+      const consumptionIndex = itemConsumption ? item.consumption.indexOf(itemConsumption) : -1;
+      if (consumptionIndex > -1) {
+        item.consumption.splice(consumptionIndex, 1);
+      }
+    }
+  };
+
+  return {
+    items, generate, load, addOrUpdateConsumption, removeConsumption,
+  };
 });
 
 if (import.meta.hot) {

@@ -1,1 +1,1 @@
-export const ButtonType = ['primary', 'secondary'] as const;
+export const ButtonType = ['primary', 'secondary', 'danger'] as const;

@@ -9,7 +9,7 @@ import type { Nullable } from '@/types/utils';
 
 const props = defineProps<{
   participants: Array<Participant>,
-  selectedParticipantId: Nullable<string>,
+  selectedParticipant: Nullable<Participant>,
   getParticipantColor: (participantId: string) => typeof colors[number],
 }>();
 
@@ -19,10 +19,10 @@ const emit = defineEmits<{
 }>();
 
 const selectionState = (participant: Participant) => {
-  if (!props.selectedParticipantId) {
+  if (!props.selectedParticipant) {
     return undefined;
   }
-  return props.selectedParticipantId === participant.id ? 'selected' : 'not-selected';
+  return props.selectedParticipant?.id === participant.id ? 'selected' : 'not-selected';
 };
 
 const newParticipant = () => {

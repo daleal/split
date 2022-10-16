@@ -6,6 +6,7 @@ import { colors } from '@/utils/colors';
 import * as api from '@/api';
 import { useBillStore } from '@/stores/bill';
 
+import type { Consumption } from '@/types/api/consumption';
 import type { Participant } from '@/types/api/participant';
 
 export const useParticipantsStore = defineStore('participants', () => {
@@ -16,9 +17,10 @@ export const useParticipantsStore = defineStore('participants', () => {
   const participants = ref<Array<Participant>>([]);
   const participantColors = reactive<Record<string, typeof colors[number]>>({});
 
-  const selectedParticipantId = computed(() => {
+  const selectedParticipant = computed(() => {
     if (billStore.bill) {
-      return selectedParticipantsStorage.value[billStore.bill.id] || null;
+      const participantId = selectedParticipantsStorage.value[billStore.bill.id];
+      return participants.value.find((participant) => participant.id === participantId) || null;
     }
     return null;
   });
@@ -52,8 +54,48 @@ export const useParticipantsStore = defineStore('participants', () => {
     return participantColors[participantId];
   };
 
+  const addOrUpdateConsumption = (consumption: Consumption) => {
+    const participant = participants.value.find(
+      (internalParticipant) => internalParticipant.id === consumption.itemId,
+    );
+    if (participant) {
+      const participantConsumption = participant.consumption.find(
+        (internalConsumption) => internalConsumption.id === consumption.id,
+      );
+      if (participantConsumption) {
+        participantConsumption.amount = consumption.amount;
+      } else {
+        participant.consumption = [...participant.consumption, consumption];
+      }
+    }
+  };
+
+  const removeConsumption = (participantId: string, itemId: string) => {
+    const participant = participants.value.find(
+      (internalParticipant) => internalParticipant.id === participantId,
+    );
+    if (participant) {
+      const participantConsumption = participant.consumption.find(
+        (internalConsumption) => internalConsumption.itemId === itemId,
+      );
+      const consumptionIndex = (
+        participantConsumption ? participant.consumption.indexOf(participantConsumption) : -1
+      );
+      if (consumptionIndex > -1) {
+        participant.consumption.splice(consumptionIndex, 1);
+      }
+    }
+  };
+
   return {
-    participants, selectedParticipantId, load, create, getColor, selectParticipant,
+    participants,
+    selectedParticipant,
+    load,
+    create,
+    getColor,
+    selectParticipant,
+    addOrUpdateConsumption,
+    removeConsumption,
   };
 });
 

@@ -15,7 +15,9 @@ const colorClasses = computed(() => {
   if (props.type === 'primary') {
     return 'text-white bg-purple-600 hover:bg-purple-500 disabled:bg-purple-300';
   } if (props.type === 'secondary') {
-    return 'text-purple-600 bg-gray-300 hover:bg-gray-200 disabled:bg-gray-200 disabled:text-gray-400';
+    return 'text-gray-900 bg-gray-300 hover:bg-gray-200 disabled:bg-gray-200 disabled:text-gray-400';
+  } if (props.type === 'danger') {
+    return 'text-white bg-red-700 hover:bg-red-800';
   }
   return '';
 });
