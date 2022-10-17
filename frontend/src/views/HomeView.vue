@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBillStore } from '@/stores/bill';
 import FileHandler from '@/components/FileHandler.vue';
@@ -12,11 +12,16 @@ const billStore = useBillStore();
 const router = useRouter();
 
 const loading = ref(false);
+const showLoadingTip = ref(false);
 const error = ref(false);
 
+let tipTimeout: number | undefined;
+
 const fileSelected = async (file: Nullable<File>) => {
+  showLoadingTip.value = false;
   error.value = false;
   loading.value = true;
+  tipTimeout = setTimeout(() => { showLoadingTip.value = true; }, 8000);
   try {
     await billStore.bootstrap(file);
     if (billStore.bill) {
@@ -26,16 +31,31 @@ const fileSelected = async (file: Nullable<File>) => {
         error.value = true;
       }
     }
-  } finally {
-    loading.value = false;
+  } catch {
     error.value = true;
+  } finally {
+    clearTimeout(tipTimeout);
+    loading.value = false;
   }
 };
+
+onUnmounted(() => { clearTimeout(tipTimeout); });
 </script>
 
 <template>
   <BigCenteredScreen v-if="loading">
     <GenericSpinner class="w-20 h-20 mx-auto text-gray-200 fill-purple-600" />
+    <Transition
+      enter-from-class="opacity-0"
+      enter-active-class="transition duration-300"
+    >
+      <h3
+        v-if="showLoadingTip"
+        class="mt-20 mx-4 text-center font-bold text-xl text-purple-600"
+      >
+        This might take a couple of seconds. Don't panic! 💖
+      </h3>
+    </Transition>
   </BigCenteredScreen>
   <FileHandler
     v-else
