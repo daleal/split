@@ -29,4 +29,4 @@ jobs:
         run: flyctl deploy
 
       - name: Migrate the database
-        run: flyctl ssh console --command "cd /app; alembic upgrade head"
+        run: echo "cd /app; alembic upgrade head; exit" | flyctl ssh console --command "/bin/bash"
