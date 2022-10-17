@@ -67,7 +67,7 @@ const modifyConsumption = () => {
           <span class="text-2xl font-bold text-gray-900">{{ amountConsumed }}</span>
           <ConsumptionColors
             v-if="item.consumption.length > 0"
-            class="mt-1 ml-1"
+            class="mt-0.5 ml-1"
             :consumption="item.consumption"
             :get-participant-color="props.getParticipantColor"
           />
