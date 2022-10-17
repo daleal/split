@@ -6,8 +6,7 @@ import split.crud.bills as bills_crud
 import split.crud.items as items_crud
 from split import deps
 from split.schemas.bill import BillResponseSchema
-from split.schemas.item import ItemCreateSchema, ItemResponseSchema
-from split.services.receipt_scanner import extract_relevant_information
+from split.schemas.item import ItemResponseSchema
 from split.tasks.bills import generate_items_task
 
 router = APIRouter()
@@ -26,7 +25,7 @@ def get_all_items_from_bill(
 async def generate_items(
     bill_id: UUID4,
     background_tasks: BackgroundTasks,
-    db: Session = Depends(deps.get_db)
+    db: Session = Depends(deps.get_db),
 ) -> BillResponseSchema:
     bill = bills_crud.get_by_id(db, bill_id)
     if bill.image is None:

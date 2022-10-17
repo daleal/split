@@ -1,9 +1,7 @@
-from fastapi import Depends
 from receipt_scanner.image.errors import NoContourFoundError
 from sqlalchemy.orm import Session
 
 import split.crud.items as items_crud
-from split import deps
 from split.models import Bill
 from split.schemas.item import ItemCreateSchema
 from split.services.receipt_scanner import extract_relevant_information
