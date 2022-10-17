@@ -14,6 +14,16 @@ export const useBillStore = defineStore('bill', () => {
   const loaded = ref(false);
   const bill = ref<Nullable<Bill>>(null);
 
+  const pollBillStatus = async (billId: string) => new Promise<Bill>((resolve) => {
+    const interval = setInterval(async () => {
+      const polledBill = await api.bills.get(billId);
+      if (!polledBill.generatingItems) {
+        clearInterval(interval);
+        resolve(polledBill);
+      }
+    }, 1000);
+  });
+
   const create = async () => {
     bill.value = await api.bills.create();
   };
@@ -38,6 +48,7 @@ export const useBillStore = defineStore('bill', () => {
     await attachImage(bill.value.id);
     loaded.value = true;
     await itemsStore.generate(bill.value.id);
+    bill.value = await pollBillStatus(bill.value.id);
   };
 
   return {

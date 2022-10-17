@@ -12,16 +12,23 @@ const billStore = useBillStore();
 const router = useRouter();
 
 const loading = ref(false);
+const error = ref(false);
 
 const fileSelected = async (file: Nullable<File>) => {
+  error.value = false;
   loading.value = true;
   try {
     await billStore.bootstrap(file);
     if (billStore.bill) {
-      await router.push({ path: `/${billStore.bill.id}` });
+      if (billStore.bill.generationSuccessful) {
+        await router.push({ path: `/${billStore.bill.id}` });
+      } else {
+        error.value = true;
+      }
     }
   } finally {
     loading.value = false;
+    error.value = true;
   }
 };
 </script>
@@ -35,4 +42,10 @@ const fileSelected = async (file: Nullable<File>) => {
     class="mt-3"
     @file-selected="fileSelected"
   />
+  <h3
+    v-if="error"
+    class="mt-10 mx-4 text-center font-semibold text-xl text-gray-600"
+  >
+    Something went wrong! Please try uploading another image
+  </h3>
 </template>

@@ -18,10 +18,7 @@ export const useItemsStore = defineStore('items', () => {
     }
   };
 
-  const generate = async (billId: string) => {
-    items.value = await api.items.generate(billId);
-    loaded.value = true;
-  };
+  const generate = (billId: string) => api.items.generate(billId);
 
   const addOrUpdateConsumption = (consumption: Consumption) => {
     const item = findById(consumption.itemId);
