@@ -56,7 +56,7 @@ const onDragOver = (event: Event) => {
     >
       <div class="flex flex-col justify-center items-center pt-5 pb-6">
         <UploadSVG class="mb-3 w-10 h-10 text-gray-400" />
-        <p class="mb-2 text-sm text-gray-500">
+        <p class="px-2 mb-2 text-center text-sm text-gray-500">
           <span class="font-semibold">Click to upload</span> or drag and drop
         </p>
       </div>
