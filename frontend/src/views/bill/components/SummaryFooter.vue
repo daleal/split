@@ -36,7 +36,7 @@ const totalAmount = computed(() => {
         class="sticky bottom-0 w-full bg-white border-t-4 border-purple-500"
       >
         <div class="container max-w-md mx-auto px-2 md:px-0">
-          <h2 class="font-bold text-3xl text-gray-800 my-4">
+          <h2 class="font-bold text-3xl text-gray-800 mx-3 my-6">
             Total owed: {{ currencyFormatter.format(totalAmount) }}
           </h2>
         </div>
