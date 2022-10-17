@@ -19,8 +19,7 @@ def get_all_items_from_bill(
 ) -> list[ItemResponseSchema]:
     items = items_crud.get_all_by_bill_id(db, bill_id)
     return [
-        ItemResponseSchema.from_orm(x)
-        for x in sorted(items, key=lambda x: x.position)
+        ItemResponseSchema.from_orm(x) for x in sorted(items, key=lambda x: x.position)
     ]
 
 
