@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:14.2
     volumes:
-      - data:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust  # Insecure connection, only for local
     networks:
@@ -12,7 +12,6 @@ services:
     init: true
     build: .
     command: uvicorn split.main:app --host 0.0.0.0 --reload
-    env_file: .env
     environment:
       DATABASE_URL: postgresql://postgres@db:5432/postgres
       ALLOWED_ORIGINS: http://localhost:3000 http://localhost:5173
@@ -26,8 +25,7 @@ services:
       - backend
 
 volumes:
-  data:
-    driver: local
+  database:
 
 networks:
   backend:
