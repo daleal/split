@@ -3,6 +3,7 @@ from pydantic import UUID4
 from sqlalchemy.orm import Session
 
 import split.crud.bills as bills_crud
+import split.crud.item_generations as item_generations_crud
 import split.crud.items as items_crud
 from split import deps
 from split.schemas.bill import BillResponseSchema
@@ -40,8 +41,8 @@ async def generate_items(
             status_code=409,
             detail=f"The bill with id {bill_id} is currently being processed",
         )
-    bill.generating_items = True
-    bill.generation_successful = None
+    item_generation = item_generations_crud.create(db)
+    bill.item_generations.append(item_generation)
     db.commit()
     background_tasks.add_task(generate_items_task, db, bill)
     return BillResponseSchema.from_orm(bill)

@@ -1,9 +1,7 @@
 import re
 
-from receipt_scanner import scan
-from receipt_scanner.image.errors import NoContourFoundError
-
-from split.services.receipt_scanner.regular_expressions import search
+from split.errors import NoRelevantItemsFoundError
+from split.services.receipt_parser.regular_expressions import search
 
 
 def clean_string(string: str) -> str:
@@ -19,15 +17,16 @@ def clean_string(string: str) -> str:
     )
 
 
-def extract_relevant_information(image_location: str) -> list[dict[str, str | int]]:
-    scanned_text = scan(image_location=image_location)
+def extract_relevant_information(
+    raw_text_lines: list[str],
+) -> list[dict[str, str | int]]:
     clean_text = list(
         filter(
-            lambda stripped_text: stripped_text != "",
-            map(clean_string, scanned_text),
+            lambda clean_text: clean_text != "",
+            map(clean_string, raw_text_lines),
         )
     )
     filtered = [x for x in map(search, clean_text) if x is not None]
     if not filtered:
-        raise NoContourFoundError()
+        raise NoRelevantItemsFoundError()
     return filtered

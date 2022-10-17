@@ -1,27 +1,39 @@
+from receipt_scanner import scan
 from receipt_scanner.image.errors import NoContourFoundError
 from sqlalchemy.orm import Session
 
 import split.crud.items as items_crud
+from split.errors import NoRelevantItemsFoundError
 from split.models import Bill
 from split.schemas.item import ItemCreateSchema
-from split.services.receipt_scanner import extract_relevant_information
+from split.services.receipt_parser import extract_relevant_information
 
 
 def generate_items_task(db: Session, bill: Bill) -> None:
-    bill.generating_items = False
-    bill.generation_successful = True
-    if bill.image is None:
-        bill.generation_successful = False
-    else:
+    if bill.item_generation is None:
+        return
+    bill.item_generation.running = False
+    bill.item_generation.image_found = False
+    bill.item_generation.borders_detected = False
+    bill.item_generation.generation_successful = False
+    if bill.image is not None:
         try:
-            extracted = extract_relevant_information(bill.image)
+            bill.item_generation.image_found = True
+            bill.item_generation.borders_detected = True
+            scanned_text = scan(image_location=bill.image)
+            bill.item_generation.generated_text_lines_raw = scanned_text
+            extracted = extract_relevant_information(scanned_text)
             items = [
                 items_crud.create(db, ItemCreateSchema(**item, position=index))
                 for index, item in enumerate(extracted)
             ]
             bill.items = items
-            if not extracted:
-                bill.generation_successful = False
+            bill.item_generation.generation_successful = True
+        except FileNotFoundError:
+            bill.item_generation.image_found = False
+            bill.item_generation.borders_detected = False
         except NoContourFoundError:
-            bill.generation_successful = False
+            bill.item_generation.borders_detected = False
+        except NoRelevantItemsFoundError:
+            ...
     db.commit()

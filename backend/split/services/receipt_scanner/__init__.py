@@ -1,1 +1,0 @@
-from split.services.receipt_scanner.core import extract_relevant_information
