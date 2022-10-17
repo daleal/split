@@ -1,6 +1,7 @@
 import re
 
 from receipt_scanner import scan
+from receipt_scanner.image.errors import NoContourFoundError
 
 from split.services.receipt_scanner.regular_expressions import search
 
@@ -28,5 +29,5 @@ def extract_relevant_information(image_location: str) -> list[dict[str, str | in
     )
     filtered = [x for x in map(search, clean_text) if x is not None]
     if not filtered:
-        raise Exception("F")
+        raise NoContourFoundError()
     return filtered
