@@ -8,6 +8,7 @@ class ItemCreateSchema(BaseSchema):
     description: StrictStr
     full_price: StrictInt
     amount: StrictInt | None
+    position: StrictInt
 
 
 class ItemResponseSchema(BaseSchema):
@@ -16,4 +17,5 @@ class ItemResponseSchema(BaseSchema):
     amount: StrictInt
     full_price: StrictInt
     individual_price: StrictInt
+    position: StrictInt
     consumption: list[ConsumptionResponseSchema]

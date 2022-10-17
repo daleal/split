@@ -15,7 +15,10 @@ def generate_items_task(db: Session, bill: Bill) -> None:
     else:
         try:
             extracted = extract_relevant_information(bill.image)
-            items = [items_crud.create(db, ItemCreateSchema(**x)) for x in extracted]
+            items = [
+                items_crud.create(db, ItemCreateSchema(**item, position=index))
+                for index, item in enumerate(extracted)
+            ]
             bill.items = items
             if not extracted:
                 bill.generation_successful = False

@@ -20,6 +20,7 @@ class Item(BaseModel):
     description = Column(String, nullable=False)
     amount = Column(Integer, nullable=False)
     full_price = Column(Integer, nullable=False)
+    position = Column(Integer, default=0, nullable=False)
 
     consumption = relationship("Consumption", back_populates="item", uselist=True)
 
@@ -30,11 +31,13 @@ class Item(BaseModel):
         self,
         description: str,
         full_price: int,
+        position: int = 0,
         amount: int | None = None,
     ) -> None:
         self.description = description
         self.full_price = full_price
         self.amount = amount or self.DEFAULT_AMOUNT
+        self.position = position
 
     @property
     def individual_price(self) -> int:
