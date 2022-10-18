@@ -2,13 +2,14 @@ from typing import Literal, overload
 
 from fastapi import HTTPException
 from pydantic import UUID4
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from split.models import Bill
 
 
 def get_all(db: Session) -> list[Bill]:
-    return list(db.query(Bill).all())
+    return list(db.query(Bill).order_by(desc(Bill.updated_at)).all())
 
 
 @overload
