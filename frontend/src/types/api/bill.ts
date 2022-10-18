@@ -3,6 +3,8 @@ import type { Nullable } from '@/types/utils';
 export interface Bill {
   id: string,
   image: Nullable<string>,
-  generatingItems: boolean,
-  generationSuccessful: boolean,
+  runningItemGeneration: boolean,
+  imageFound: Nullable<boolean>,
+  bordersDetected: Nullable<boolean>,
+  generationSuccessful: Nullable<boolean>,
 }

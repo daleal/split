@@ -40,10 +40,22 @@ class Bill(BaseModel):
         return self.item_generations[-1]
 
     @property
-    def generating_items(self) -> bool:
+    def running_item_generation(self) -> bool:
         if self.item_generation is None:
             return False
         return self.item_generation.running
+
+    @property
+    def image_found(self) -> bool | None:
+        if self.item_generation is None:
+            return None
+        return self.item_generation.image_found
+
+    @property
+    def borders_detected(self) -> bool | None:
+        if self.item_generation is None:
+            return None
+        return self.item_generation.borders_detected
 
     @property
     def generation_successful(self) -> bool | None:

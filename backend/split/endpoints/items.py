@@ -36,7 +36,7 @@ async def generate_items(
             status_code=409,
             detail=f"No image has been uploaded for bill with id {bill_id}",
         )
-    if bill.generating_items:
+    if bill.running_item_generation:
         raise HTTPException(
             status_code=409,
             detail=f"The bill with id {bill_id} is currently being processed",
