@@ -16,7 +16,7 @@ const totalAmount = computed(() => {
   return participantsStore.selectedParticipant.consumption.reduce(
     (amount, individualConsumption) => {
       const item = itemsStore.findById(individualConsumption.itemId);
-      return individualConsumption.amount * (amount + (item?.individualPrice || 0));
+      return amount + (individualConsumption.amount * (item?.individualPrice || 0));
     },
     0,
   );
