@@ -14,7 +14,7 @@ services:
     command: uvicorn split.main:app --host 0.0.0.0 --reload
     environment:
       DATABASE_URL: postgresql://postgres@db:5432/postgres
-      ALLOWED_ORIGINS: http://localhost:3000 http://localhost:5173
+      ALLOWED_ORIGINS: http://localhost:3000 http://localhost:5173 http://localhost:5174
     ports:
       - 8000:8000
     volumes:
