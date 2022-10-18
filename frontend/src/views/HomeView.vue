@@ -53,7 +53,7 @@ onUnmounted(() => { clearTimeout(tipTimeout); });
         v-if="showLoadingTip"
         class="mt-20 mx-4 text-center font-bold text-xl text-purple-600"
       >
-        This might take a couple of seconds. Don't panic! 💖
+        This might take a couple of seconds. Don't panic!
       </h3>
     </Transition>
   </BigCenteredScreen>
@@ -62,10 +62,39 @@ onUnmounted(() => { clearTimeout(tipTimeout); });
     class="mt-3"
     @file-selected="fileSelected"
   />
-  <h3
+  <div
     v-if="error"
-    class="mt-10 mx-4 text-center font-semibold text-xl text-gray-600"
+    class="mt-10 mx-4 text-center"
   >
-    Something went wrong! Please try uploading another image
-  </h3>
+    <h3 class="mb-2 font-semibold text-xl text-gray-600">
+      Something went wrong! Please try uploading another image.
+    </h3>
+    <div v-if="billStore.bill">
+      <h5
+        v-if="billStore.bill.imageFound === false"
+        class="mt-3 italic text-md text-gray-600"
+      >
+        There appears to have been an error when uploading the bill image.
+      </h5>
+      <h5
+        v-else-if="billStore.bill.imageFound && billStore.bill.bordersDetected === false"
+        class="mt-3 italic text-md text-gray-600"
+      >
+        There appears to have been an error when searching for the bill edges.
+      </h5>
+      <h5
+        v-else-if="billStore.bill.imageFound && billStore.bill.bordersDetected"
+        class="mt-3 italic text-md text-gray-600"
+      >
+        There appears to have been an error when extracting the text from the image.
+      </h5>
+      <h5 class="italic text-md text-gray-600">
+        If you want more information, ask the developer about the
+        bill with the following id:
+      </h5>
+      <h3 class="mt-1 font-extrabold text-md text-gray-600">
+        {{ billStore.bill.id }}
+      </h3>
+    </div>
+  </div>
 </template>

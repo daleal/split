@@ -10,5 +10,7 @@ class BillUpdateSchema(BaseSchema):
 class BillResponseSchema(BaseSchema):
     id: UUID4
     image: StrictStr | None
-    generating_items: StrictBool
+    running_item_generation: StrictBool
+    image_found: StrictBool | None
+    borders_detected: StrictBool | None
     generation_successful: StrictBool | None

@@ -17,7 +17,7 @@ export const useBillStore = defineStore('bill', () => {
   const pollBillStatus = async (billId: string) => new Promise<Bill>((resolve) => {
     const interval = setInterval(async () => {
       const polledBill = await api.bills.get(billId);
-      if (!polledBill.generatingItems) {
+      if (!polledBill.runningItemGeneration) {
         clearInterval(interval);
         resolve(polledBill);
       }
