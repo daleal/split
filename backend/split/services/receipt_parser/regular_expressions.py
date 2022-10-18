@@ -11,6 +11,7 @@ DENY_LIST = [
     "tarjeta",
     "fecha",
     "propina",
+    "sugerida",
     "local",
     "tienda",
 ]
