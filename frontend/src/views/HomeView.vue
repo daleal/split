@@ -62,10 +62,21 @@ onUnmounted(() => { clearTimeout(tipTimeout); });
     class="mt-3"
     @file-selected="fileSelected"
   />
-  <h3
+  <div
     v-if="error"
-    class="mt-10 mx-4 text-center font-semibold text-xl text-gray-600"
+    class="mt-10 mx-4 text-center"
   >
-    Something went wrong! Please try uploading another image
-  </h3>
+    <h3 class="font-semibold text-xl text-gray-600">
+      Something went wrong! Please try uploading another image.
+    </h3>
+    <div v-if="billStore.bill">
+      <h5 class="mt-2 italic text-md text-gray-600">
+        If you want to know what happend, ask the developer about the
+        bill with the following id:
+      </h5>
+      <h3 class="mt-1 font-extrabold text-md text-gray-600">
+        {{ billStore.bill.id }}
+      </h3>
+    </div>
+  </div>
 </template>
