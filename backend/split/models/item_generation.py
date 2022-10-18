@@ -24,7 +24,7 @@ class ItemGeneration(BaseModel):
     image_found = Column(Boolean, default=None, nullable=True)
     borders_detected = Column(Boolean, default=None, nullable=True)
     generation_successful = Column(Boolean, default=None, nullable=True)
-    generated_text_lines_raw = Column(ARRAY(Text), default=None, nullable=True)
+    generated_text_lines_raw = Column(ARRAY(Text), default=list, nullable=False)
 
     bill_id = Column(UUID(as_uuid=True), ForeignKey("bills.id"))
     bill = relationship("Bill", back_populates="item_generations")
