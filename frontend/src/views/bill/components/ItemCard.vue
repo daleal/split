@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { colors } from '@/utils/colors';
-import { currencyFormatter } from '@/utils/intl';
+import { currencyFormatter, numbersFormatter } from '@/utils/intl';
 import ConsumptionColors from '@/views/bill/components/consumption/ConsumptionColors.vue';
 
 import type { Item } from '@/types/api/item';
@@ -19,7 +19,9 @@ const emit = defineEmits<{ (e: 'modify-consumption', item?: Item): void }>();
 const fullPrice = computed(() => currencyFormatter.format(props.item.fullPrice));
 const individualPrice = computed(() => currencyFormatter.format(props.item.individualPrice));
 const amountConsumed = computed(
-  () => props.item.consumption.reduce((total, consumption) => total + consumption.amount, 0),
+  () => numbersFormatter.format(
+    props.item.consumption.reduce((total, consumption) => total + consumption.amount, 0),
+  ),
 );
 
 const inflect = (word: string, amount: number) => (amount === 1 ? word : `${word}s`);

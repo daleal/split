@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { consumptionAmountFormatter } from '@/utils/formatters';
+import { numbersFormatter, parseFloat } from '@/utils/intl';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -33,21 +34,21 @@ const consumption = computed(() => {
   return null;
 });
 
-const amount = ref(consumption.value?.amount?.toString() || '0');
+const amount = ref(numbersFormatter.format(consumption.value?.amount || 0));
 
 const removableConsumption = computed(() => (
-  consumption.value && !Number.parseFloat(amount.value)
+  consumption.value && !parseFloat(amount.value)
 ));
 const mainButtonType = computed(() => (removableConsumption.value ? 'danger' : 'primary'));
 const mainButtonIcon = computed(() => (removableConsumption.value ? 'trash-can' : 'check'));
 
 const showMainButton = computed(() => (
-  removableConsumption.value || Number.parseFloat(amount.value)
+  removableConsumption.value || parseFloat(amount.value)
 ));
 
 const modifyConsumption = () => {
   if (props.item) {
-    const consumptionAmount = Number.parseFloat(amount.value);
+    const consumptionAmount = parseFloat(amount.value);
     if (!consumptionAmount && consumption.value !== null) {
       emit('remove-consumption');
     } else {
@@ -61,7 +62,7 @@ const close = () => {
 };
 
 watch([() => props.item, () => props.selectedParticipant], () => {
-  amount.value = consumption?.value?.amount?.toString() || '0';
+  amount.value = numbersFormatter.format(consumption.value?.amount || 0);
 });
 </script>
 

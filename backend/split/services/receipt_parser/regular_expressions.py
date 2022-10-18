@@ -2,6 +2,7 @@ import re
 
 DENY_LIST = [
     "total",
+    "balance",
     "consumo",
     "credito",
     "crédito",
