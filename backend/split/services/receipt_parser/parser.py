@@ -18,14 +18,10 @@ DENIED_WORDS_LIST = [
     "tienda",
 ]
 
-DENIED_PATTERNS_LIST = [
-    re.compile(r"\s[0-9]{1,2} del? 20[0-9]{2}\s?"),  # dates
-]
-
 DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
-    r"(?P<description>\d*[a-zA-Z][a-zA-Z0-9 ]{3,}[a-zA-Z0-9])"
+    r"(?P<description>\d*[a-zA-Z\(\)][a-zA-Z0-9 \(\)]{3,}[a-zA-Z0-9\(\)])"
 )
 AMOUNT_EXPRESSION_FRAGMENT = r"(?P<amount>[0-9]{1,3})"
 FULL_PRICE_EXPRESSION_FRAGMENT = r"(?P<full_price>[0-9]{4,6})"
@@ -86,9 +82,6 @@ AMOUNT_MISSING_VARIANT_2 = generate_expression(
 def search(string: str) -> dict[str, str | int] | None:
     if DENIED_WORDS_EXPRESSION.search(string):
         return None
-    for denied_pattern in DENIED_PATTERNS_LIST:
-        if denied_pattern.search(string):
-            return None
     expressions = [
         ALL_PRESENT_EXPRESSION_VARIANT_1,
         ALL_PRESENT_EXPRESSION_VARIANT_2,

@@ -1,20 +1,6 @@
-import re
-
 from split.errors import NoRelevantItemsFoundError
-from split.services.receipt_parser.regular_expressions import search
-
-
-def clean_string(string: str) -> str:
-    return (
-        re.sub(r"[0-9]{7,}", "", string)
-        .replace(".", "")
-        .replace(",", "")
-        .replace("$", "")
-        .replace("/", "")
-        .replace("|", " ")
-        .replace("-", " ")
-        .strip()
-    )
+from split.services.receipt_parser.cleaner import clean_string
+from split.services.receipt_parser.parser import search
 
 
 def extract_relevant_information(
