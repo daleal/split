@@ -7,8 +7,8 @@ DENIED_PATTERNS_LIST = [
 ]
 
 
-CHARACTERS_TO_REMOVE = [".", ",", "$", ":", "“", "‘", "{", "}", "[", "]", "!"]
-CHARACTERS_TO_REPLACE_WITH_SPACE = ["*", "/", "|", "_", "-", "—", "©", "»"]
+CHARACTERS_TO_REMOVE = [".", ",", "$", "“", "‘", "{", "}", "[", "]", "!"]
+CHARACTERS_TO_REPLACE_WITH_SPACE = ["*", ":", "/", "|", "_", "-", "—", "©", "»"]
 
 
 REGEX_TO_REMOVE = re.compile("|".join(re.escape(x) for x in CHARACTERS_TO_REMOVE))

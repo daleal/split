@@ -6,10 +6,8 @@ from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from sqlalchemy.orm import relationship
 
 from split.errors import NoRelevantItemsFoundError
-from split.services.receipt_parser.core import (
-    clean_string,
-    extract_relevant_information,
-)
+from split.services.receipt_parser.cleaner import clean_string
+from split.services.receipt_parser.core import extract_relevant_information
 from split.shared.models import BaseModel
 
 if TYPE_CHECKING:
