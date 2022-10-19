@@ -1,6 +1,6 @@
 import re
 
-DENY_LIST = [
+DENIED_WORDS_LIST = [
     "total",
     "balance",
     "monto",
@@ -18,7 +18,11 @@ DENY_LIST = [
     "tienda",
 ]
 
-DENY_LIST_EXPRESSION = re.compile("|".join(DENY_LIST), re.IGNORECASE)
+DENIED_PATTERNS_LIST = [
+    re.compile(r"\s[0-9]{1,2} del? 20[0-9]{2}\s?"),  # dates
+]
+
+DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
     r"(?P<description>\d*[a-zA-Z][a-zA-Z0-9 ]{3,}[a-zA-Z0-9])"
@@ -80,8 +84,11 @@ AMOUNT_MISSING_VARIANT_2 = generate_expression(
 
 
 def search(string: str) -> dict[str, str | int] | None:
-    if DENY_LIST_EXPRESSION.search(string):
+    if DENIED_WORDS_EXPRESSION.search(string):
         return None
+    for denied_pattern in DENIED_PATTERNS_LIST:
+        if denied_pattern.search(string):
+            return None
     expressions = [
         ALL_PRESENT_EXPRESSION_VARIANT_1,
         ALL_PRESENT_EXPRESSION_VARIANT_2,
