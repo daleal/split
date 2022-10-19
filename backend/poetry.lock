@@ -433,7 +433,7 @@ Pillow = ">=8.0.0"
 
 [[package]]
 name = "receipt-scanner"
-version = "0.2.0"
+version = "0.3.0"
 description = "Write applications to charge money to your friends after you paid the whole bill by easily parsing the receipt 💸"
 category = "main"
 optional = false
@@ -575,7 +575,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "75689e992914eb7657a319992e354a1f0353251eda5df3013a7dd41530097dd1"
+content-hash = "ffee2a4e9537d0941c441a30278b4791ecb383ed4ed7374a2757fca1059293e5"
 
 [metadata.files]
 alembic = []
