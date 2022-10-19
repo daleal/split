@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import UUID4, StrictBool, StrictInt, StrictStr
 
 from split.shared.schemas import BaseSchema
@@ -5,6 +7,7 @@ from split.shared.schemas import BaseSchema
 
 class ItemGenerationListResponseSchema(BaseSchema):
     id: UUID4
+    updated_at: datetime
     running: StrictBool
     image_found: StrictBool | None
     borders_detected: StrictBool | None
