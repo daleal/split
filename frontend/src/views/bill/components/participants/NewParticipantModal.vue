@@ -38,6 +38,9 @@ watch(() => props.show, () => {
 <template>
   <GenericModal :show="props.show">
     <div class="flex flex-col">
+      <h2 class="mb-3 font-semibold text-xl text-gray-700">
+        Add a participant
+      </h2>
       <GenericInput
         v-model="value"
         autocapitalize="none"
