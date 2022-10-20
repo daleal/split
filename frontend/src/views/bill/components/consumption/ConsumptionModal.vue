@@ -72,21 +72,27 @@ watch([() => props.item, () => props.selectedParticipant], () => {
 <template>
   <GenericModal :show="props.show">
     <div class="flex flex-col">
+      <h2
+        v-if="props.item"
+        class="border-b pb-1 mb-1.5 font-bold text-xl text-gray-700"
+      >
+        {{ props.item.description }}
+      </h2>
       <div
         v-if="props.selectedParticipant && props.selectedParticipantColor"
-        class="flex mb-3"
+        class="mb-3"
       >
-        <h2 class="mr-2 font-semibold text-xl text-gray-700">
+        <span class="mr-1 font-semibold text-xl text-gray-700">
           Consumption by
-        </h2>
+        </span>
         <TextBadge
-          class="mr-2"
+          class="mr-1"
           :text="props.selectedParticipant.name"
           :color="props.selectedParticipantColor"
         />
-        <h2 class="font-semibold text-xl text-gray-700">
+        <span class="font-semibold text-xl text-gray-700">
           was...
-        </h2>
+        </span>
       </div>
       <GenericInput
         v-model="amount"
