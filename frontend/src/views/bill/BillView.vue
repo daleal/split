@@ -144,6 +144,7 @@ onMounted(() => {
       class="my-2"
       :item="item"
       :participant="participantsStore.selectedParticipant"
+      :participant-color="participantsStore.selectedParticipantColor"
       :get-participant-color="participantsStore.getColor"
       @modify-consumption="toggleConsumptionModal"
     />

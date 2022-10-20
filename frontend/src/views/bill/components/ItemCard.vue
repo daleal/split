@@ -12,10 +12,37 @@ import type { Nullable } from '@/types/utils';
 const props = defineProps<{
   item: Item,
   participant: Nullable<Participant>,
+  participantColor: Nullable<typeof colors[number]>,
   getParticipantColor: (participantId: string) => typeof colors[number],
 }>();
 
 const emit = defineEmits<{ (e: 'modify-consumption', item?: Item): void }>();
+
+const borderColorClasses = computed(() => {
+  let classes = 'border';
+  if (!props.participant || !props.participantColor) {
+    return classes;
+  }
+  if (!props.participant.consumption.map((cons) => cons.itemId).includes(props.item.id)) {
+    return classes;
+  }
+  if (props.participantColor === 'blue') {
+    classes += ' border-blue-800';
+  } else if (props.participantColor === 'red') {
+    classes += ' border-red-800';
+  } else if (props.participantColor === 'green') {
+    classes += ' border-green-800';
+  } else if (props.participantColor === 'yellow') {
+    classes += ' border-yellow-800';
+  } else if (props.participantColor === 'indigo') {
+    classes += ' border-indigo-800';
+  } else if (props.participantColor === 'purple') {
+    classes += ' border-purple-800';
+  } else if (props.participantColor === 'pink') {
+    classes += ' border-pink-800';
+  }
+  return classes;
+});
 
 const fullPrice = computed(() => currencyFormatter.format(props.item.fullPrice));
 const individualPrice = computed(() => currencyFormatter.format(props.item.individualPrice));
@@ -35,7 +62,7 @@ const modifyConsumption = () => {
 </script>
 
 <template>
-  <div class="bg-gray-50 rounded-lg shadow-md select-none">
+  <div :class="`${borderColorClasses} bg-gray-50 rounded-lg shadow-md select-none`">
     <div class="px-5 mt-2 mb-5">
       <h5 class="text-xl font-semibold tracking-tight text-gray-900">
         {{ props.item.description }}
