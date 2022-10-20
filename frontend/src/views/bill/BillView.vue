@@ -101,6 +101,7 @@ onMounted(() => {
   <ConsumptionModal
     :item="selectedConsumptionItem"
     :selected-participant="participantsStore.selectedParticipant"
+    :selected-participant-color="participantsStore.selectedParticipantColor"
     :show="consumptionModalOpened"
     :modifying-consumption="modifyingConsumption"
     @modify-consumption="modifyConsumption"
