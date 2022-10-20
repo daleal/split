@@ -1,55 +1,50 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useField } from 'vee-validate';
+import { ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { validateNonEmpty, validateMinimumCharacterAmount } from '@/utils/validations';
+import { zeroToHundreadIntergerFormatter } from '@/utils/formatters';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 
-const props = defineProps<{ show: boolean, creating: boolean }>();
+const props = defineProps<{
+  value: string,
+  show: boolean,
+}>();
 
-const emit = defineEmits<{ (e: 'create', name: string): void, (e: 'close'): void }>();
+const emit = defineEmits<{
+  (e: 'update-value', value: string): void,
+  (e: 'close'): void,
+}>();
 
-const {
-  value, errorMessage, resetField, meta,
-} = useField('alias', [
-  validateNonEmpty(),
-  validateMinimumCharacterAmount(3),
-], {
-  initialValue: '',
-});
+const value = ref(props.value);
 
-const create = () => {
-  emit('create', value.value);
+const updateValue = () => {
+  emit('update-value', value.value);
 };
 
 const close = () => {
   emit('close');
 };
 
-watch(() => props.show, () => {
-  if (!props.show) {
-    resetField();
-  }
+watch(() => props.value, () => {
+  value.value = props.value;
 });
 </script>
 
 <template>
   <GenericModal :show="props.show">
     <div class="flex flex-col">
+      <h2 class="mb-3 font-semibold text-xl text-gray-700">
+        Enter the tip in %
+      </h2>
       <GenericInput
         v-model="value"
-        autocapitalize="none"
-        :disabled="props.creating"
-        :loading="props.creating"
         class="w-72 md:w-80"
-        :error="errorMessage"
+        :formatter="zeroToHundreadIntergerFormatter"
       />
       <div class="mt-1 flex justify-end">
         <GenericButton
           type="secondary"
-          :disabled="props.creating"
           @click="close"
         >
           <FontAwesomeIcon
@@ -59,8 +54,7 @@ watch(() => props.show, () => {
         </GenericButton>
         <GenericButton
           class="ml-3"
-          :disabled="props.creating || !meta.valid"
-          @click="create"
+          @click="updateValue"
         >
           <FontAwesomeIcon :icon="[ 'fas', 'check' ]" />
         </GenericButton>

@@ -19,27 +19,27 @@ const props = defineProps<{
 const emit = defineEmits<{ (e: 'modify-consumption', item?: Item): void }>();
 
 const borderColorClasses = computed(() => {
-  let classes = 'border';
   if (!props.participant || !props.participantColor) {
-    return classes;
+    return 'border border-gray-50';
   }
   if (!props.participant.consumption.map((cons) => cons.itemId).includes(props.item.id)) {
-    return classes;
+    return 'border border-gray-50';
   }
+  let classes = 'border ';
   if (props.participantColor === 'blue') {
-    classes += ' border-blue-800';
+    classes += 'border-blue-800';
   } else if (props.participantColor === 'red') {
-    classes += ' border-red-800';
+    classes += 'border-red-800';
   } else if (props.participantColor === 'green') {
-    classes += ' border-green-800';
+    classes += 'border-green-800';
   } else if (props.participantColor === 'yellow') {
-    classes += ' border-yellow-800';
+    classes += 'border-yellow-800';
   } else if (props.participantColor === 'indigo') {
-    classes += ' border-indigo-800';
+    classes += 'border-indigo-800';
   } else if (props.participantColor === 'purple') {
-    classes += ' border-purple-800';
+    classes += 'border-purple-800';
   } else if (props.participantColor === 'pink') {
-    classes += ' border-pink-800';
+    classes += 'border-pink-800';
   }
   return classes;
 });
