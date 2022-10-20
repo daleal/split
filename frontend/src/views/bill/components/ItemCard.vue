@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { colors } from '@/utils/colors';
 import { currencyFormatter, numbersFormatter } from '@/utils/intl';
 import ConsumptionColors from '@/views/bill/components/consumption/ConsumptionColors.vue';
@@ -66,6 +67,15 @@ const modifyConsumption = () => {
           }"
           @click="modifyConsumption"
         >
+          <FontAwesomeIcon
+            v-if="props.participant"
+            class="mr-1.5"
+            :class="{
+              'mb-0.5': item.consumption.length === 0,
+              'mt-0.5': item.consumption.length > 0,
+            }"
+            :icon="[ 'fas', 'pencil' ]"
+          />
           <span class="text-2xl font-bold text-gray-900">{{ amountConsumed }}</span>
           <ConsumptionColors
             v-if="item.consumption.length > 0"

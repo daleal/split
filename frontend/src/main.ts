@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faCheck, faPlus, faTrashCan, faXmark,
+  faCheck, faPencil, faPlus, faTrashCan, faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { router } from '@/router';
 import App from '@/App.vue';
@@ -10,7 +10,7 @@ import App from '@/App.vue';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '@/assets/styles/tailwind.css';
 
-library.add(faCheck, faPlus, faTrashCan, faXmark);
+library.add(faCheck, faPencil, faPlus, faTrashCan, faXmark);
 
 const pinia = createPinia();
 const application = createApp(App);
