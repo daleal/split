@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { colors } from '@/utils/colors';
 import { consumptionAmountFormatter } from '@/utils/formatters';
 import { numbersFormatter, parseFloat } from '@/utils/intl';
+import TextBadge from '@/components/TextBadge.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -14,6 +16,7 @@ import { Nullable } from '@/types/utils';
 const props = defineProps<{
   item: Nullable<Item>,
   selectedParticipant: Nullable<Participant>,
+  selectedParticipantColor: Nullable<typeof colors[number]>,
   show: boolean,
   modifyingConsumption: boolean
 }>();
@@ -69,6 +72,28 @@ watch([() => props.item, () => props.selectedParticipant], () => {
 <template>
   <GenericModal :show="props.show">
     <div class="flex flex-col">
+      <h2
+        v-if="props.item"
+        class="border-b pb-1 mb-1.5 font-bold text-xl text-gray-700"
+      >
+        {{ props.item.description }}
+      </h2>
+      <div
+        v-if="props.selectedParticipant && props.selectedParticipantColor"
+        class="mb-3"
+      >
+        <span class="mr-1 font-semibold text-xl text-gray-700">
+          Consumption by
+        </span>
+        <TextBadge
+          class="mr-1"
+          :text="props.selectedParticipant.name"
+          :color="props.selectedParticipantColor"
+        />
+        <span class="font-semibold text-xl text-gray-700">
+          was...
+        </span>
+      </div>
       <GenericInput
         v-model="amount"
         class="w-72 md:w-80"

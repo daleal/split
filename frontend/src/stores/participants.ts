@@ -17,6 +17,13 @@ export const useParticipantsStore = defineStore('participants', () => {
   const participants = ref<Array<Participant>>([]);
   const participantColors = reactive<Record<string, typeof colors[number]>>({});
 
+  const getColor = (participantId: string) => {
+    if (participantColors[participantId] === undefined) {
+      participantColors[participantId] = selectRandom(colors);
+    }
+    return participantColors[participantId];
+  };
+
   const findById = (participantId: string) => (
     participants.value.find((participant) => participant.id === participantId)
   );
@@ -29,6 +36,12 @@ export const useParticipantsStore = defineStore('participants', () => {
     return null;
   });
 
+  const selectedParticipantColor = computed(() => (
+    selectedParticipant.value
+      ? getColor(selectedParticipant.value.id)
+      : null
+  ));
+
   const load = async (billId: string) => {
     if (!loaded.value) {
       participants.value = await api.participants.all(billId);
@@ -37,8 +50,11 @@ export const useParticipantsStore = defineStore('participants', () => {
   };
 
   const create = async (billId: string, name: string) => {
-    const newParticipant = await api.participants.create(billId, name);
-    participants.value = [...participants.value, newParticipant];
+    if (billStore.bill) {
+      const newParticipant = await api.participants.create(billId, name);
+      selectedParticipantsStorage.value[billStore.bill.id] = newParticipant.id;
+      participants.value = [...participants.value, newParticipant];
+    }
   };
 
   const selectParticipant = (participantId: string) => {
@@ -49,13 +65,6 @@ export const useParticipantsStore = defineStore('participants', () => {
         selectedParticipantsStorage.value[billStore.bill.id] = participantId;
       }
     }
-  };
-
-  const getColor = (participantId: string) => {
-    if (participantColors[participantId] === undefined) {
-      participantColors[participantId] = selectRandom(colors);
-    }
-    return participantColors[participantId];
   };
 
   const addOrUpdateConsumption = (consumption: Consumption) => {
@@ -91,6 +100,7 @@ export const useParticipantsStore = defineStore('participants', () => {
     participants,
     findById,
     selectedParticipant,
+    selectedParticipantColor,
     load,
     create,
     getColor,

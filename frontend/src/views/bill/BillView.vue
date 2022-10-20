@@ -11,7 +11,7 @@ import ParticipantsSelector from '@/views/bill/components/participants/Participa
 import NewParticipantModal from '@/views/bill/components/participants/NewParticipantModal.vue';
 import ConsumptionModal from '@/views/bill/components/consumption/ConsumptionModal.vue';
 import ItemCard from '@/views/bill/components/ItemCard.vue';
-import SummaryFooter from '@/views/bill/components/SummaryFooter.vue';
+import SummaryFooter from '@/views/bill/components/summary/SummaryFooter.vue';
 
 import type { Item } from '@/types/api/item';
 import type { Nullable } from '@/types/utils';
@@ -101,6 +101,7 @@ onMounted(() => {
   <ConsumptionModal
     :item="selectedConsumptionItem"
     :selected-participant="participantsStore.selectedParticipant"
+    :selected-participant-color="participantsStore.selectedParticipantColor"
     :show="consumptionModalOpened"
     :modifying-consumption="modifyingConsumption"
     @modify-consumption="modifyConsumption"
@@ -143,6 +144,7 @@ onMounted(() => {
       class="my-2"
       :item="item"
       :participant="participantsStore.selectedParticipant"
+      :participant-color="participantsStore.selectedParticipantColor"
       :get-participant-color="participantsStore.getColor"
       @modify-consumption="toggleConsumptionModal"
     />
