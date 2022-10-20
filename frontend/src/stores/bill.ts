@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import * as api from '@/api';
+import { RETRIES } from '@/constants/backend';
 import { useImageUpload } from '@/composables/imageUpload';
 import { useItemsStore } from '@/stores/items';
 
@@ -13,6 +14,28 @@ export const useBillStore = defineStore('bill', () => {
 
   const loaded = ref(false);
   const bill = ref<Nullable<Bill>>(null);
+
+  const insistentBillCreate = async () => {
+    for (let iteration = 0; iteration < RETRIES; iteration += 1) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const createdBill = await api.bills.create();
+        return createdBill;
+      } catch {} // eslint-disable-line no-empty
+    }
+    throw new Error('Bill failed to create');
+  };
+
+  const insistentBillLoad = async (billId: string) => {
+    for (let iteration = 0; iteration < RETRIES; iteration += 1) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const loadedBill = await api.bills.get(billId);
+        return loadedBill;
+      } catch {} // eslint-disable-line no-empty
+    }
+    throw new Error(`Bill ${billId} failed to load`);
+  };
 
   const pollBillStatus = async (billId: string) => new Promise<Bill>((resolve) => {
     const interval = setInterval(async () => {
@@ -30,7 +53,7 @@ export const useBillStore = defineStore('bill', () => {
 
   const load = async (billId: string) => {
     if (!loaded.value) {
-      bill.value = await api.bills.get(billId);
+      bill.value = await insistentBillLoad(billId);
       loaded.value = true;
     }
   };
@@ -44,7 +67,7 @@ export const useBillStore = defineStore('bill', () => {
 
   const bootstrap = async (file: Nullable<File>) => {
     uploadImage(file); // Deliberately not awaited
-    bill.value = await api.bills.create();
+    bill.value = await insistentBillCreate();
     await attachImage(bill.value.id);
     loaded.value = true;
     await itemsStore.generate(bill.value.id);
