@@ -2,9 +2,9 @@ import re
 from functools import reduce
 
 DENIED_PATTERNS_LIST = [
-    re.compile(r"\s\d{1,2} del? 20\d{2}\s?"),  # human-readable dates
-    re.compile(r"\s(20)?\d{2}-\d{2}-(20)?\d{2}\s?"),  # dates
-    re.compile(r"\s(20)?\d{2}/\d{2}/(20)?\d{2}\s?"),  # dates
+    re.compile(r"(^|\s+)\d{1,2} del? 20\d{2}($|\s+)"),  # human-readable dates
+    re.compile(r"(^|\s+)(20)?\d{2}-\d{2}-(20)?\d{2}($|\s+)"),  # dates
+    re.compile(r"(^|\s+)(20)?\d{2}/\d{2}/(20)?\d{2}($|\s+)"),  # dates
 ]
 
 
