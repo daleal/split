@@ -3,12 +3,45 @@ from functools import reduce
 
 DENIED_PATTERNS_LIST = [
     re.compile(r"\s\d{1,2} del? 20\d{2}\s?"),  # human-readable dates
-    re.compile(r"\s\d{2}-\d{2}-(20)?\d{2}\s?"),  # dates
+    re.compile(r"\s(20)?\d{2}-\d{2}-(20)?\d{2}\s?"),  # dates
+    re.compile(r"\s(20)?\d{2}/\d{2}/(20)?\d{2}\s?"),  # dates
 ]
 
 
-CHARACTERS_TO_REMOVE = [".", ",", "$", "“", "‘", "{", "}", "[", "]", "!"]
-CHARACTERS_TO_REPLACE_WITH_SPACE = ["*", ":", "/", "|", "_", "-", "—", "©", "»"]
+CHARACTERS_TO_REMOVE = [
+    ".",
+    ",",
+    "$",
+    "“",
+    "‘",
+    "’",
+    "{",
+    "}",
+    "[",
+    "]",
+    "¡",
+    "!",
+    "¿",
+    "?",
+]
+CHARACTERS_TO_REPLACE_WITH_SPACE = [
+    "*",
+    ":",
+    "/",
+    "|",
+    "=",
+    "+",
+    "_",
+    "-",
+    "—",
+    "<",
+    ">",
+    "«",
+    "»",
+    "©",
+    "¥",
+    "¢",
+]
 
 
 REGEX_TO_REMOVE = re.compile("|".join(re.escape(x) for x in CHARACTERS_TO_REMOVE))
