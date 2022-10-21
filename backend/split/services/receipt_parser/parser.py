@@ -22,10 +22,12 @@ DENIED_WORDS_LIST = [
 DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
-    r"(?P<description>\d*[a-zA-Z\(\)][a-zA-Z0-9 \(\)]{3,}[a-zA-Z0-9\(\)])"
+    r"(?P<description>\d*[a-zA-Z\(\)][a-zA-Z0-9 \(\)]{3,}[a-zA-Z\(\)])"
 )
 AMOUNT_EXPRESSION_FRAGMENT = r"(?P<amount>[0-9]{1,3})"
-FULL_PRICE_EXPRESSION_FRAGMENT = r"(?P<full_price>[0-9]{4,6})"
+FULL_PRICE_EXPRESSION_FRAGMENT = (
+    r"((?P<price_1>[0-9]{4,6})(\s+(?P<price_2>[0-9]{4,6}))?)"
+)
 SEPARATOR = r"\s+"
 
 
@@ -97,9 +99,11 @@ def search(string: str) -> dict[str, str | int] | None:
         search_result = expression.search(string)
         if search_result is not None:
             raw_result = search_result.groupdict()
+            price_1 = int(raw_result["price_1"])
+            price_2 = int(raw_result.get("price_2", "0"))
             final_result: dict[str, str | int] = {
                 "description": raw_result["description"],
-                "full_price": int(raw_result["full_price"]),
+                "full_price": max(price_1, price_2),
             }
             amount = raw_result.get("amount")
             if amount:
