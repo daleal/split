@@ -11,6 +11,9 @@ CHARACTERS_TO_REMOVE = [
     ".",
     ",",
     "$",
+    "€",
+    "¥",
+    "¢",
     "“",
     "‘",
     "’",
@@ -38,8 +41,6 @@ CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "«",
     "»",
     "©",
-    "¥",
-    "¢",
 ]
 
 REGEX_TO_REMOVE = re.compile("|".join(re.escape(x) for x in CHARACTERS_TO_REMOVE))
