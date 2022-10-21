@@ -2,16 +2,18 @@ import re
 from functools import reduce
 
 DENIED_PATTERNS_LIST = [
-    re.compile(r"\s\d{1,2} del? 20\d{2}\s?"),  # human-readable dates
-    re.compile(r"\s(20)?\d{2}-\d{2}-(20)?\d{2}\s?"),  # dates
-    re.compile(r"\s(20)?\d{2}/\d{2}/(20)?\d{2}\s?"),  # dates
+    re.compile(r"(^|\s+)\d{1,2} del? 20\d{2}($|\s+)"),  # human-readable dates
+    re.compile(r"(^|\s+)(20)?\d{2}-\d{2}-(20)?\d{2}($|\s+)"),  # dates
+    re.compile(r"(^|\s+)(20)?\d{2}/\d{2}/(20)?\d{2}($|\s+)"),  # dates
 ]
-
 
 CHARACTERS_TO_REMOVE = [
     ".",
     ",",
     "$",
+    "€",
+    "¥",
+    "¢",
     "“",
     "‘",
     "’",
@@ -39,10 +41,7 @@ CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "«",
     "»",
     "©",
-    "¥",
-    "¢",
 ]
-
 
 REGEX_TO_REMOVE = re.compile("|".join(re.escape(x) for x in CHARACTERS_TO_REMOVE))
 REGEX_TO_REPLACE_WITH_SPACE = re.compile(
@@ -50,7 +49,10 @@ REGEX_TO_REPLACE_WITH_SPACE = re.compile(
 )
 
 CUSTOM_REPLACEMENTS = [
-    lambda text: re.sub(r"(\s\d+)(\.|,)\d{1,2}\s", r"\1", text),  # remove decimals
+    # dot + space in between only digits to only dot
+    lambda text: re.sub(r"((^|\s+)\d+)(\.|,) (\d+)($|\s+)", r"\1\3\4\5", text),
+    # two decimals to only integer
+    lambda text: re.sub(r"((^|\s+)\d+)(\.|,)\d{1,2}($|\s+)", r"\1\4", text),
 ]
 
 

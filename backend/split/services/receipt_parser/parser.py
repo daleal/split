@@ -16,6 +16,7 @@ DENIED_WORDS_LIST = [
     "sugerida",
     "local",
     "tienda",
+    "cliente",
 ]
 
 DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
