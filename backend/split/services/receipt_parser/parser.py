@@ -100,7 +100,7 @@ def search(string: str) -> dict[str, str | int] | None:
         if search_result is not None:
             raw_result = search_result.groupdict()
             price_1 = int(raw_result["price_1"])
-            price_2 = int(raw_result.get("price_2", "0"))
+            price_2 = int(raw_result["price_2"] or "0")
             final_result: dict[str, str | int] = {
                 "description": raw_result["description"],
                 "full_price": max(price_1, price_2),
