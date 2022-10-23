@@ -73,13 +73,12 @@ def clean_string(string: str) -> str:
         string,
     )
     string_with_no_large_numbers = re.sub(r"[0-9]{7,}", "", custom_replacements)
-    ascii_string = unidecode(string_with_no_large_numbers)
     string_with_removed_characters = REGEX_TO_REMOVE.sub(
         "",
-        ascii_string,
+        string_with_no_large_numbers,
     )
     string_with_replaced_characters = REGEX_TO_REPLACE_WITH_SPACE.sub(
         " ",
         string_with_removed_characters,
     )
-    return string_with_replaced_characters.strip()
+    return unidecode(string_with_replaced_characters).strip()
