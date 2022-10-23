@@ -43,6 +43,7 @@ CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "_",
     "-",
     "—",
+    "~",
     "<",
     ">",
     "«",
