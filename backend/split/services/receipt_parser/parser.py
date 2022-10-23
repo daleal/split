@@ -22,7 +22,7 @@ DENIED_WORDS_LIST = [
 DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
-    r"(?P<description>\d*[a-zA-Z\(\)][a-zA-Z0-9 \(\)]{3,}[a-zA-Z\(\)])"
+    r"(?P<description>\d*[a-zA-Z\(\)][a-zA-Z0-9 \(\)]+[a-zA-Z\(\)])"
 )
 AMOUNT_EXPRESSION_FRAGMENT = r"(?P<amount>[0-9]{1,3})"
 FULL_PRICE_EXPRESSION_FRAGMENT = (
