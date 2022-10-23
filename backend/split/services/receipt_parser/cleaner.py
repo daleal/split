@@ -30,6 +30,7 @@ CHARACTERS_TO_REMOVE = [
     "!",
     "¿",
     "?",
+    "@",
 ]
 CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "*",
@@ -43,6 +44,7 @@ CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "_",
     "-",
     "—",
+    "~",
     "<",
     ">",
     "«",
@@ -57,7 +59,7 @@ REGEX_TO_REPLACE_WITH_SPACE = re.compile(
 
 CUSTOM_REPLACEMENTS = [
     # dot + space in between only digits to only dot
-    lambda text: re.sub(r"((^|\s+)\d+)(\.|,) (\d+)($|\s+)", r"\1\3\4\5", text),
+    lambda text: re.sub(r"((^|\s+)\$?\d+)(\.|,) (\d+)($|\s+)", r"\1\3\4\5", text),
     # two decimals to only integer
     lambda text: re.sub(r"((^|\s+)\d+)(\.|,)\d{1,2}($|\s+)", r"\1\4", text),
 ]
