@@ -30,6 +30,7 @@ CHARACTERS_TO_REMOVE = [
     "!",
     "¿",
     "?",
+    "@",
 ]
 CHARACTERS_TO_REPLACE_WITH_SPACE = [
     "*",
