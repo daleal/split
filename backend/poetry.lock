@@ -550,6 +550,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "unidecode"
+version = "1.3.6"
+description = "ASCII transliterations of Unicode text"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "uvicorn"
 version = "0.18.3"
 description = "The lightning-fast ASGI server."
@@ -575,7 +583,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "bbe346781236bf8e48cd60f5d2b781ea2e7c5cbf3f6a93b95565218e27f66a5b"
+content-hash = "af51893fc637767dfc7e2bf2f13471b9389e3b066fb4e28565c9c8740d05b7b3"
 
 [metadata.files]
 alembic = []
@@ -622,5 +630,6 @@ starlette = []
 tomli = []
 tomlkit = []
 typing-extensions = []
+unidecode = []
 uvicorn = []
 wrapt = []

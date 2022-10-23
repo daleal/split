@@ -1,6 +1,8 @@
 import re
 from functools import reduce
 
+from unidecode import unidecode
+
 DENIED_PATTERNS_LIST = [
     re.compile(r"(^|\s+)\d{1,2} del? 20\d{2}($|\s+)"),  # human-readable dates
     re.compile(r"(^|\s+)(20)?\d{2}-\d{2}-(20)?\d{2}($|\s+)"),  # dates
@@ -71,9 +73,10 @@ def clean_string(string: str) -> str:
         string,
     )
     string_with_no_large_numbers = re.sub(r"[0-9]{7,}", "", custom_replacements)
+    ascii_string = unidecode(string_with_no_large_numbers)
     string_with_removed_characters = REGEX_TO_REMOVE.sub(
         "",
-        string_with_no_large_numbers,
+        ascii_string,
     )
     string_with_replaced_characters = REGEX_TO_REPLACE_WITH_SPACE.sub(
         " ",
