@@ -24,9 +24,9 @@ DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
 DESCRIPTION_EXPRESSION_FRAGMENT = (
     r"(?P<description>\d* ?[a-zA-Z\(\)][a-zA-Z0-9 \(\)]+[a-zA-Z\(\)])"
 )
-AMOUNT_EXPRESSION_FRAGMENT = r"(?P<amount>[0-9]{1,3})"
+AMOUNT_EXPRESSION_FRAGMENT = r"(?P<amount>[0-9]{1,2})"
 FULL_PRICE_EXPRESSION_FRAGMENT = (
-    r"((?P<price_1>[0-9]{4,6})(\s+(?P<price_2>[0-9]{4,6}))?)"
+    r"((?P<price_1>[0-9]{3,6})(\s+(?P<price_2>[0-9]{3,6}))?)"
 )
 SEPARATOR = r"\s+"
 
@@ -102,7 +102,7 @@ def search(string: str) -> dict[str, str | int] | None:
             price_1 = int(raw_result["price_1"])
             price_2 = int(raw_result["price_2"] or "0")
             full_price = max(price_1, price_2)
-            if full_price < 1000:
+            if full_price < 100:
                 return None
             final_result: dict[str, str | int] = {
                 "description": raw_result["description"],
