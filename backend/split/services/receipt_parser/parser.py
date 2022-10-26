@@ -1,5 +1,7 @@
 import re
 
+from split.services.receipt_parser.utils import detect_as_word
+
 DENIED_WORDS_LIST = [
     "total",
     "balance",
@@ -19,7 +21,10 @@ DENIED_WORDS_LIST = [
     "cliente",
 ]
 
-DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
+DENIED_WORDS_EXPRESSION = re.compile(
+    detect_as_word("|".join(DENIED_WORDS_LIST)),
+    re.IGNORECASE
+)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
     r"(?P<description>\d* ?[a-zA-Z\(\)][a-zA-Z0-9 \(\)]+[a-zA-Z\(\)])"

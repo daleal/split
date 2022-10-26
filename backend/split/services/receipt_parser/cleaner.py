@@ -3,10 +3,12 @@ from functools import reduce
 
 from unidecode import unidecode
 
+from split.services.receipt_parser.utils import detect_as_word
+
 DENIED_PATTERNS_LIST = [
-    re.compile(r"(^|\s+)\d{1,2} del? 20\d{2}($|\s+)"),  # human-readable dates
-    re.compile(r"(^|\s+)(20)?\d{2}-\d{2}-(20)?\d{2}($|\s+)"),  # dates
-    re.compile(r"(^|\s+)(20)?\d{2}/\d{2}/(20)?\d{2}($|\s+)"),  # dates
+    re.compile(detect_as_word(r"\d{1,2} del? 20\d{2}")),  # human-readable dates
+    re.compile(detect_as_word(r"(20)?\d{2}-\d{2}-(20)?\d{2}")),  # dates
+    re.compile(detect_as_word(r"(20)?\d{2}/\d{2}/(20)?\d{2}")),  # dates
 ]
 
 CHARACTERS_TO_REMOVE = [
