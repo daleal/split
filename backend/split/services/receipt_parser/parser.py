@@ -27,8 +27,7 @@ DENIED_WORDS_LIST = [
 ]
 
 DENIED_WORDS_EXPRESSION = re.compile(
-    detect_as_word("|".join(DENIED_WORDS_LIST)),
-    re.IGNORECASE
+    detect_as_word("|".join(DENIED_WORDS_LIST)), re.IGNORECASE
 )
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
