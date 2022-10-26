@@ -1,25 +1,34 @@
 import re
 
+from split.services.receipt_parser.utils import detect_as_word
+
 DENIED_WORDS_LIST = [
-    "total",
     "balance",
-    "monto",
+    "boleta",
+    "cliente",
     "consumo",
-    "descuento",
+    "convenios",
     "credito",
-    "crédito",
     "debito",
-    "débito",
-    "tarjeta",
+    "descuento",
+    "dscto",
     "fecha",
+    "iva",
+    "local",
+    "monto",
+    "neto",
+    "pago",
     "propina",
     "sugerida",
-    "local",
+    "tarjeta",
     "tienda",
-    "cliente",
+    "total",
+    "vuelto",
 ]
 
-DENIED_WORDS_EXPRESSION = re.compile("|".join(DENIED_WORDS_LIST), re.IGNORECASE)
+DENIED_WORDS_EXPRESSION = re.compile(
+    detect_as_word("|".join(DENIED_WORDS_LIST)), re.IGNORECASE
+)
 
 DESCRIPTION_EXPRESSION_FRAGMENT = (
     r"(?P<description>\d* ?[a-zA-Z\(\)][a-zA-Z0-9 \(\)]+[a-zA-Z\(\)])"
