@@ -4,8 +4,10 @@ from split.services.receipt_parser.utils import detect_as_word
 
 DENIED_WORDS_LIST = [
     "balance",
+    "boleta",
     "cliente",
     "consumo",
+    "convenios",
     "credito",
     "debito",
     "descuento",
@@ -15,11 +17,13 @@ DENIED_WORDS_LIST = [
     "local",
     "monto",
     "neto",
+    "pago",
     "propina",
     "sugerida",
     "tarjeta",
     "tienda",
     "total",
+    "vuelto",
 ]
 
 DENIED_WORDS_EXPRESSION = re.compile(
