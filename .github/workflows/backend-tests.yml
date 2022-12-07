@@ -1,0 +1,37 @@
+name: backend-tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/backend-tests.yml
+      - backend/**/*
+
+jobs:
+  pytest:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+
+    steps:
+      - name: Checkout to commit code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10.6"
+
+      - name: Install Poetry
+        run: make get-poetry
+
+      - name: Add system path to Poetry
+        run: echo $HOME/.poetry/bin >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run the tests
+        run: make tests
