@@ -11,22 +11,27 @@ build-env:
 	poetry run pip install --upgrade pip
 	poetry run poetry install
 
+# Tests
+.PHONY: tests
+tests:
+	poetry run pytest
+
 # Passive linters
 .PHONY: black
 black:
-	poetry run black split --check
+	poetry run black split tests --check
 
 .PHONY: flake8
 flake8:
-	poetry run flake8 split
+	poetry run flake8 split tests
 
 .PHONY: isort
 isort:
-	poetry run isort split --profile=black --check
+	poetry run isort split tests --profile=black --check
 
 .PHONY: pylint
 pylint:
-	poetry run pylint split
+	poetry run pylint split tests
 
 .PHONY: mypy
 mypy:
@@ -35,8 +40,8 @@ mypy:
 # Aggresive linters
 .PHONY: black!
 black!:
-	poetry run black split
+	poetry run black split tests
 
 .PHONY: isort!
 isort!:
-	poetry run isort split --profile=black
+	poetry run isort split tests --profile=black
