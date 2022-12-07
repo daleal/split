@@ -9,51 +9,39 @@ def assert_values(
     if parsed is None:
         assert expected is None
     else:
-        parsed == expected
+        assert parsed == expected
 
 
 class TestPriceSearch:
     def test_price_description(self):
         text = "1000 hot dog"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 1000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 1000})
 
     def test_description_price(self):
         text = "hot dog 1000"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 1000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 1000})
 
     def test_low_price_high_price_description(self):
         text = "1000 2000 hot dog"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 2000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 2000})
 
     def test_description_low_price_high_price(self):
         text = "hot dog 1000 2000"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 2000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 2000})
 
     def test_high_price_low_price_description(self):
         text = "2000 1000 hot dog"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 2000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 2000})
 
     def test_description_high_price_low_price(self):
         text = "hot dog 2000 1000"
         parsed = search(text)
-        assert_values(
-            parsed, {"description": "hot dog", "full_price": 2000}
-        )
+        assert_values(parsed, {"description": "hot dog", "full_price": 2000})
 
 
 class TestAmountPriceOnlyTextDescriptionSearch:
@@ -142,7 +130,8 @@ class TestAmountPriceOnlyTextDescriptionSearch:
         )
 
 
-class TestAmountPriceSearch:
+class TestAmountPriceSearch:  # pylint: disable=too-many-public-methods
+    @pytest.mark.xfail(reason="Case not implemented")
     def test_amount_description_number_price(self):
         text = "3 hot dog 1 1000"
         parsed = search(text)
@@ -202,6 +191,7 @@ class TestAmountPriceSearch:
             parsed, {"amount": 3, "description": "1 hot dog", "full_price": 1000}
         )
 
+    @pytest.mark.xfail(reason="Case not implemented")
     def test_amount_description_number_low_price_high_price(self):
         text = "3 hot dog 1 1000 2000"
         parsed = search(text)
@@ -261,6 +251,7 @@ class TestAmountPriceSearch:
             parsed, {"amount": 3, "description": "1 hot dog", "full_price": 2000}
         )
 
+    @pytest.mark.xfail(reason="Case not implemented")
     def test_amount_description_number_high_price_low_price(self):
         text = "3 hot dog 1 2000 1000"
         parsed = search(text)
